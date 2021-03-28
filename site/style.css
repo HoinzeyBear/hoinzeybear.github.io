@@ -40,14 +40,6 @@ div.content{
     border-left-color: #dee7e1;
 }
 
-aside{
-    order: 1;
-}
-
-div.content, aside, div.post{
-    background-color: #FFFFFF;
-}
-
 @media all and (min-width: 600px) {
     .aside { flex: 1 0 0; }
   }
@@ -83,11 +75,6 @@ p.post-date{
     color: #c7c7c7;
 }
 
-aside {
-    font-size: 1.1em;
-    line-height: 1.5em;
-}
-
 .post-h1{
     font-size: 3rem;
     margin: 10px 0 10px 0;
@@ -114,10 +101,23 @@ code {
     font-size: 1.1em;
 }
 
+figure {
+    margin: 0;
+}
+
+aside{
+    order: 1;
+}
+
+aside {
+    font-size: 1.1em;
+    line-height: 1.5em;
+}
+
 .aside section.links ul{
     list-style: none;
 }
 
-figure {
-    margin: 0;
+div.content, aside, div.post{
+    background-color: #FFFFFF;
 }

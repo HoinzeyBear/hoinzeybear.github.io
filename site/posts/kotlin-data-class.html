@@ -17,15 +17,17 @@
         </header>
         <div class="post">
             <h1 class="post-h1">Kotlin: Data Class</h1>
-            <p class="post-date">23<sup>rd</sup> March 2021</p> <!-- TODO -->
+            <p class="post-date">28<sup>th</sup> March 2021</p>
             <article class = "post-article">
                 <p class="post-paragraph">
-                    Data classes offer a quick and easy way to make a class who's job it is to store, you guessed it, data.
-                    They remove a lot of the boilerplate and auto-generate a few methods for you:<br/>
+                    Data classes offer a quick and easy way to make a class which stores data.
+                    If you want to do this in java you need to override the following methods:<br/>
                 <code class="emph">toString()</code><br/>
                 <code class="emph">equals()</code><br/>
                 <code class="emph">hashCode()</code><br/>
-                If you declare your own version of these methods then yours will be used instead of the generated one.
+                In Kotlin however, these are auto-generated from the properties in the primary constructor.
+                Values not in the primary constructor are not referenced in these methods so would require you create
+                your own implementation.
                 </p>
                 <figure>
                     <pre>
@@ -42,7 +44,7 @@
                     </pre>
                     <figcaption>A Kotlin data class</figcaption>
                 </figure>
-                <h3 class="post-h3">Requirements</h3>
+                <h3 class="post-h3">Requirements for data classes</h3>
                 <p class="post-paragraph">
                     * The primary constructor needs to have at least one paramater<br/>
                     * All paramaters need to be either <code class="emph">val</code> or <code class="emph">var</code><br/>
@@ -51,7 +53,9 @@
                 <br/>
                 <h3 class="post-h3">Useful stuff</h3>
                 <p class="post-paragraph">
-                    The <code class="emph">copy()</code> method allows us to copy/clone the object and change some of its values
+                    It is generally recommended that your data classes should be immutable. To make it easier to work with immutable
+                    objects Kotlin generates the <code class="emph">copy()</code> method which allows us to copy/clone the object and 
+                    change some of its properties
                     <pre>
                         <code class="language-kotlin">
     val nextBlogPost = kotlinDataClasses.copy(title = "RecyclerView", rating = "2/5")</code>
