@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+    <script async src="../prism.js"></script>
+    <title>
+        Kotlin: Data Class
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Kotlin: Data Class</h1>
+            <p class="post-date">23<sup>rd</sup> March 2021</p> <!-- TODO -->
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Data classes offer a quick and easy way to make a class who's job it is to store, you guessed it, data.
+                    They remove a lot of the boilerplate and auto-generate a few methods for you:<br/>
+                <code class="emph">toString()</code><br/>
+                <code class="emph">equals()</code><br/>
+                <code class="emph">hashCode()</code><br/>
+                If you declare your own version of these methods then yours will be used instead of the generated one.
+                </p>
+                <figure>
+                    <pre>
+                        <code class="language-kotlin">
+        data class BlogPost(val title: String,
+                            val author: String)
+    
+            fun main() {
+            val kotlinDataClasses =  BlogPost("Kotlin: Data Class", "Hoinzey")
+    
+            println("Thank you for reading \"${kotlinDataClasses.title}\"")
+            //Thank you for reading "Kotlin: Data Class"
+        }</code>
+                    </pre>
+                    <figcaption>A Kotlin data class</figcaption>
+                </figure>
+                <h3 class="post-h3">Requirements</h3>
+                <p class="post-paragraph">
+                    * The primary constructor needs to have at least one paramater<br/>
+                    * All paramaters need to be either <code class="emph">val</code> or <code class="emph">var</code><br/>
+                    * They can't be abstract, open or inner<br/>
+                </p>
+                <br/>
+                <h3 class="post-h3">Useful stuff</h3>
+                <p class="post-paragraph">
+                    The <code class="emph">copy()</code> method allows us to copy/clone the object and change some of its values
+                    <pre>
+                        <code class="language-kotlin">
+    val nextBlogPost = kotlinDataClasses.copy(title = "RecyclerView", rating = "2/5")</code>
+                    </pre>
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    If you <strong>don't</strong> want something to be used in the auto-generated methods then you can declare it inside the body of the class
+                    <pre>
+                        <code class="language-kotlin">
+    data class BlogPost(val title: String,) {
+        val author = "Hoinzey"
+    }</code>
+                    </pre>
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>I work in software and I forget stuff so I'm going to write it down.</p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../main.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+</body>

@@ -1,0 +1,123 @@
+body{
+    max-width: 1200px;
+    margin: auto;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header{
+    text-align: center;
+    font-weight: bold;
+}
+
+header h1, .post-h1{
+    font-size: 4rem;
+    margin: 10px 0 10px 0;
+}
+
+header h2{
+    font-size: 1.2em;
+}
+
+header, footer {
+    background-color: #dee7e1;
+    color: #0f1310;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.container > * {
+    padding: 10px;
+    flex: 1 100%;
+}
+
+div.content{
+    order: 2;
+    border-left: 2px solid;
+    border-left-color: #dee7e1;
+}
+
+aside{
+    order: 1;
+}
+
+div.content, aside, div.post{
+    background-color: #FFFFFF;
+}
+
+@media all and (min-width: 600px) {
+    .aside { flex: 1 0 0; }
+  }
+  
+@media all and (min-width: 800px) {
+    .content, .post { flex: 3 0px; }
+    .aside { order: 1; } 
+    .content, .post { order: 2; }
+    .footer { order: 4; }
+}
+
+h2.post-title a{
+    font-size: 2rem;
+    text-decoration: none;
+    color: #0f1310;
+}
+
+h2.post-title a:hover{
+    text-decoration: underline;
+}
+
+article p{
+    margin: 0px;
+}
+
+article p.post-preview{
+    font-size: 1.3em;
+    line-height: 1.5em;
+}
+
+p.post-date{
+    margin: 5px 0px 5px 0px;
+    color: #c7c7c7;
+}
+
+aside {
+    font-size: 1.1em;
+    line-height: 1.5em;
+}
+
+.post-h1{
+    font-size: 3rem;
+    margin: 10px 0 10px 0;
+}
+
+.post-paragraph {
+    font-size: 1.3em;
+    line-height: 1.6em;
+}
+
+.post-article {
+    margin-top: 2em;
+}
+
+pre, code.emph {
+    padding: 0 !important;
+    margin: 0 !important;
+    font-style: italic;
+    background-color:#dee7e1 ;
+}
+
+code {
+    font-family: monospace;
+    font-size: 1.1em;
+}
+
+.aside section.links ul{
+    list-style: none;
+}
+
+figure {
+    margin: 0;
+}
