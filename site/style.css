@@ -18,9 +18,13 @@ header h2{
     font-size: 1.2em;
 }
 
-header, footer {
+header {
     background-color: #dee7e1;
     color: #0f1310;
+}
+
+footer{
+    min-height: 50px;
 }
 
 .container{

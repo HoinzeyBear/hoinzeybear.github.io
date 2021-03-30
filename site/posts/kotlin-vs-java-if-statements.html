@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+    <script async src="../prism.js"></script>
+    <title>
+        Java Vs Kotlin if statement
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Java Vs Kotlin: "if" statements</h1>
+            <p class="post-date">30<sup>st</sup> March 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    I don't think anyone reading this has ever written a project without an <code class="emph">if</code> statement, and if you have, you probably shouldn't be reading my content.
+                    There are some slight differences in how Java and Kotlin treat it though which might catch you unawares at first. Firstly, how do Java and Kotlin 
+                    define the if statement: 
+                </p>
+                <h3 class="post-h3">Java</h3>
+                <p class="post-paragraph">
+                    <em>A control flow statement</em>. That is how an if statement is defined in Java. It tells your program to execute only if the condition is true.
+                </p>
+                <br/>
+                <h3 class="post-h3">Kotlin</h3>
+                <p class="post-paragraph">
+                    <em>An expression which returns a value</em>. That is an important difference as it means that Kotlin has no ternary operator.
+                </p>
+                <br/>
+                <h2 class="post-h2">The Code - Java</h3>
+                <p class="post-paragraph">
+                    Below is an example of how you might structure a typical <code class="emph">if</code> statement in Java
+                </p>
+                <pre>
+                    <code class="language-java">
+    public String getLunchOrder(String dayOfWeek) {
+        if(dayOfWeek.equals("Saturday")) {
+            return  "Ice cream"; // Hooray!
+        }
+        return "Tuna sandwich";
+    }
+
+    String currentDay = "Monday";
+    final String order = getLunchOrder(currentDay);
+    println(order)
+    //Tuna Sandwich...yuck!</code>
+                </pre>
+                <br/>
+                <p class="post-paragraph">
+                    Gets the job done, but with a ternary operator you can make it into a one-liner. And programmers love one liners.
+                </p>
+                <pre>
+                    <code class="language-java">
+    public String getLunchOrder(String dayOfWeek) {
+        return dayOfWeek.equals("Saturday") ? "Ice Cream" : "Tuna Sandwich";
+    }</code>
+                </pre>
+                <h2 class="post-h2">The Code - Kotlin</h2>
+                <p class="post-paragraph">
+                    Now lets do the same in Kotlin. You could keep the first block same as above and it would be fine, but you can also make
+                    a slight adjustment
+                </p>
+                <pre>
+                    <code class="language-kotlin">
+    fun getLunchOrder(dayOfWeek: String): String {
+        return if (dayOfWeek == "Saturday") {
+            "Ice cream" // Hooray!
+        } else {
+            "Tuna sandwich"
+        }
+    }</code>
+                </pre>
+                <p class="post-paragraph">
+                    Because in Kotlin an if is an expression which returns a value, we can return the result of that expression directly. There
+                    is no ternary operator in Kotlin however so to make it fit on one line you'd need to change it to the following
+                </p>
+                <pre>
+                    <code class="language-kotlin">
+    fun getLunchOrder(dayOfWeek: String): String {
+        return if (dayOfWeek == "Saturday") "Ice cream" else "Tuna sandwich"
+    }</code>
+                </pre>
+                <h2 class="post-h2">Elvis has entered the building</h2>
+                <p class="post-paragraph">
+                    Kotlin offers the elvis operator <code class="emph">?:</code> which, while it might look similar, fills a different role for Kotlin. It is less of a 
+                    "Use this or this" and more of a "If this is null, use this"
+                </p>
+                <pre>
+                    <code class="language-kotlin">
+    fun getParentNodeName(branch: Node): String {
+        return branch.parentNode.nodeName ?: "Nope"
+        //or you can throw exceptions instead !
+        //return branch.parentNode.nodeName ?: throw NoParentNoteException()
+    }</code>
+                </pre>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>I work in software and I forget stuff so I'm going to write it down.</p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
