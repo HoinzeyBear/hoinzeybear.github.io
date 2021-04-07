@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+    <script async src="../prism.js"></script>
+    <title>
+        Javascript: Arrays
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Javascript: Arrays</h1>
+            <p class="post-date">7<sup>st</sup> April 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    If you are coming from another language, arrays are linear allocations
+                    of memory which are quite fast, Javascript arrays are not like this.
+                    <br/>
+                    Instead Javascript provides an object which is array-like. It is 
+                    slower than "real" arrays but it can be more convenient to use.
+                </p>
+                <br/>
+                <h3 class="post-h3">Creating arrays</h3>
+                <p class="post-paragraph">
+                    Array literals are the easiest way to create an array. A literal is 
+                    a pair of square brackets surrounding zero or more values separated by
+                    commas.
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    //Aray literal
+    var empty = []
+    var carBrands = ["Ferrari", "Volvo", "Ford"]
+
+    //Object literal
+    var carBrands_object = {'0': 'Ferrari', '1': 'Volvo', '2': 'Ford'}</code>
+                </pre>
+                <p class="post-paragraph">
+                    The array and object literal produce very similar results. Both are 
+                    objects containing 3 values and those properties have the same names
+                    and values. There is significant difference however as 'carBrands' inherits
+                    from <code class="emph">Array.prototype</code> while 'carBrands_object' inherits
+                    from <code class="emph">Object.prototype</code>, so 'numbers' inherits some
+                    useful methods along with the <em>length</em> property.
+                </p>
+                <br/>
+                <h3 class="post-h3">Length property</h3>
+                <p class="post-paragraph">
+                    Unlike other languages, you don't need to know the size of your array 
+                    when you are defining it. The length property however is not defined by
+                    the amount of items in your array, it is the largest integer property name
+                    plus one.
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    var sillyArray = []
+    sillyArray.length       //0
+
+    sillyArray[999] = true
+    sillyArray.length       //1000</code>
+                </pre>
+                <p class="post-paragraph">
+                    The [ ] postfix subscript converts the expression to a string which is used as
+                    the property name. If that string looks like a positive integer which is greater
+                    than or equal to the array's current length then the length of the array is set
+                    to the new value plus one.
+                    <br/>
+                    The length can be set explicitly. Making the length larger does not allocate more 
+                    memory making it smaller will cause all properties with a key greater than the new 
+                    value will be deleted
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    carBrands.length = 2
+    //['Ferrari', 'Volvo']</code>
+                </pre>
+                <h3 class="post-h3">Knowing you have an array</h3>
+                <p class="post-paragraph">
+                    Arrays in JS are objects which are array-like, as such, the <code class="emph">typeof</code>
+                    method on an array returns 'object'. The core language does not have a good means of
+                    distinguishing between arrays and objects so you need to write your own method to work it out.
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    var is_array = function(value) {
+        return Object.prototype.toString.apply(value) === '[object Array]'
+    }</code>
+                </pre>
+                <h2 class="post-h2">Useful methods</h2>
+                <h3 class="post-h3">array.concat(item...)</h3>
+                <p class="post-paragraph">
+                    Creates a new array with the items appended to it individually.
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    var a = ['Ferrari', 'Volvo']
+    var b = ['Skoda', 'Seat']
+    var c = a.concat(b)
+    //c is ['Ferrari', 'Volvo', 'Skoda', 'Seat']</code>
+                </pre>
+                <h3 class="post-h3">array.join(separator)</h3>
+                <p class="post-paragraph">
+                    Turns each item in the array to a string and joins them together with the separator.
+                    If no separator is supplied then ',' is used. 
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    var a = ['Its', 'just', 'like', 'a', 'stringbuilder']
+    var c = a.join(' ')
+    //Its just like a stringbuilder</code>
+                </pre>
+                <h3 class="post-h3">array.splice(start, length, item...)</h3>
+                <p class="post-paragraph">
+                    This is most commonly used to remove elements from an array. If there are additional
+                    items these will be inserted
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    var a = ['Its', 'just', 'like', 'a', 'stringbuilder']
+    var c = a.splice(1, 1, 'not')
+    //Its not like a stringbuilder</code>
+                </pre>
+                <h3 class="post-h3">pop() and push(item...)</h3>
+                <p class="post-paragraph">
+                    Turn your arrays into stacks! <code class="emph">pop()</code> removes and returns
+                    the last element in the array.<br/>
+                    <code class="emph">push(item...)</code> will add items to the end of your array. Unlike <code class="emph">concat(item...)</code>
+                    it will add arrays into the array rather than its individual objects.<br/>
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    var a = ['Ferrari', 'Volvo', 'Mercedes']
+    var b = a.pop()
+    //a is ['Ferrari', 'Volvo'] 
+    //b is 'Mercedes'
+
+    var c = a.push('BMW')
+    //a is ['Ferrari', 'Volvo', 'BMW']
+    //c is the length of the new array - 3</code>
+                </pre>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>I work in software and I forget stuff so I'm going to write it down.</p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
