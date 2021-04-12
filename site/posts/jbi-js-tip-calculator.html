@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+    <script async src="../prism.js"></script>
+    <title>
+        JBI: JS Tip calculator
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Just build it: JS Tip calculator</h1>
+            <p class="post-date">12<sup>st</sup> April 2021</p>
+            <article class = "post-article">
+                <h2 class="post-h2">Just build it</h3>
+                <p class="post-paragraph">
+                    Just build it. Simple enough idea and I don't think most programmers, including myself, practice it enough.
+                    We're often too concerned with trying to build something as if it was suddenly going to have millions of concurrent
+                    users that we never end up building anything. So from now on when I think "how would you do that?" - I'm going to <em>try</em>
+                    do it. The goal is not to pick something that is going to take weeks of constant work, I have a full time job and shit, but stuff
+                    that takes an hour, 2 hours maybe more if I am enjoying it but the point is to just <em>write more code</em>. You get better at the
+                    things you do most often
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    So for the first post in what will hopefully become a series I am doing one of the most cliché starter apps: A tip calculator. In javascript.
+                    Why ?
+                </p>
+                <ul>
+                    <li>It's simple</li>
+                    <li>It's quick</li>
+                    <li>I don't use JS in my day job so the first 2 points are useful</li>
+                </ul>
+                <br/>
+                <p class="post-paragraph">
+                    <strong>Disclaimer:</strong> the code you are going to find in these posts is never going to be optimal, that just isn't the point. Unless you plan
+                    on shipping this to customers don't feel the need to add in all the exception handling, it will just put you off doing it. Now I'm not saying you 
+                    should never learn to handle exceptions, I'm just saying don't let the thought of corner cases stop you pumping out some logic
+                </p>
+                <br/>
+                <h2 class="post-h2">The problem</h3>
+                <p class="post-paragraph">
+                    You've had dinner in a nice restaurant and there is a big party of you at the table. The bill comes and you look at each other 
+                    and need to figure out 2 things. How much do we tip the server and how much do we each have to pay after that is added to the bill ?<br/>
+                    We have 4 variables:
+                </p>
+                <ul>
+                    <li>The total bill</li>
+                    <li>How much we want to tip</li>
+                    <li>The number of people</li>
+                    <li>How much we have to pay including the tip</li>
+                </ul>
+                <pre>
+                    <code class="language-kotlin">
+                    class CounterViewModel : ViewModel() {
+
+                        var count = 0
+                    
+                        fun getIncrementedCount(): Int{
+                            this.count ++
+                            return this.count
+                        }
+                    }
+                    </code>
+                </pre>
+                
+                <p class="post-paragraph">
+                    Aliquam eget velit vitae odio elementum porttitor sed nec diam. Fusce a lacus suscipit, feugiat mauris in,
+                     auctor augue. Quisque at metus erat. Nam placerat nisl vel ante efficitur efficitur. Suspendisse ornare turpis
+                      non consequat tempus. Proin nibh eros, aliquet quis dui nec, facilisis facilisis nisi. Donec eu faucibus metus.
+                      Donec hendrerit scelerisque tempor. Etiam eu aliquam nibh, eu posuere turpis. Class aptent taciti sociosqu 
+                      ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean dignissim orci mi, a ullamcorper quam 
+                      commodo eget. Quisque sagittis odio sit amet tincidunt ornare.
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>I work in software and I forget stuff so I'm going to write it down.</p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
