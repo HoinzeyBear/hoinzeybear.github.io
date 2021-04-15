@@ -126,7 +126,15 @@ aside {
 }
 
 @media only screen and (max-width: 768px) {
+    /* body { max-width: 768px;} */
     .aside { order: 1; } 
-    .content, .post { order: 2; }
+    .content, .post { order: 2; max-width: 768px}
+    .footer { order: 4; }
+}
+
+@media only screen and (max-width: 425px) {
+    /* body { max-width: 425px;} */
+    .aside { order: 1; } 
+    .content, .post { order: 2; max-width: 425px; }
     .footer { order: 4; }
 }
