@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+    <script async src="../prism.js"></script>
+    <title>
+        JBI: Bill & Tip splitter
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Just build it: Bill & Tip splitter</h1>
+            <p class="post-date">15<sup>th</sup> April 2021</p>
+            <article class = "post-article">
+                <h2 class="post-h2">Just build it</h3>
+                <p class="post-paragraph">
+                    You tend to be better at the things you do more often. You tend not to show off what you are not good at but that is what these posts are
+                    about. I'm going to take bite-sized problems in languages I do and do not work in and tackle them and then post them. This is in an effort
+                    to become a better programmer and engineer because if I do not practice the action of writing code I can't honestly expect to get better at it.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    So for the first post in this series I am doing a cliché starter app: A tip calculator. In javascript.
+                    Why ? Because it is simple and I don't use javascript in my day job.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    <strong>Disclaimer:</strong> the code you are going to find in these posts is never going to be optimal, that just isn't the point.
+                </p>
+                <br/>
+                <h2 class="post-h2">The problem</h3>
+                <p class="post-paragraph">
+                    Write some javascript to determine how much each member of a party must pay at the end of a meal after a tip has been added to the cost.
+                    <br/>So we have the following variables:
+                </p>
+                <ul>
+                    <li>The total bill</li>
+                    <li>How much we want to tip</li>
+                    <li>The number of people</li>
+                </ul>
+                <p class="post-paragraph">
+                    You can find the rest of the code (html) <a href="https://github.com/HoinzeyBear/javascripting/tree/main/js-tip-calculator" target="_blank">here</a>
+                </p>
+                <pre>
+                    <code class="language-javascript">
+    console.log('Tip me !')
+    var numberOfPeople = document.getElementsByName("peoplecount")[0].value
+    var originalBill = document.getElementsByName("billtotal")[0].value
+    var tipPercent = document.getElementsByName("tippercent")[0].value
+    var totalPerPerson = document.getElementById("costpp")
+
+    var tipAsNumber = (Number.parseFloat(tipPercent) / 100)
+    var totalBill = Number.parseFloat(originalBill) + (originalBill * tipAsNumber)
+
+    var costPerPerson = (totalBill / numberOfPeople).toFixed(2)
+    totalPerPerson.textContent = costPerPerson
+        
+    console.log("For "+numberOfPeople+ " people the bill of "+originalBill + "\n"
+    + "with a tip of " + tipPercent+"% brings the per-person cost to \n"
+    + costPerPerson)</code>
+                </pre>
+            </article>
+            <p class="post-paragraph">
+                And that's it. Provided each person in the party cost the exact same amount for their meal you have a perfectly fair way to know how much is owed per person 
+                including with the tip. Happy eating comrades.
+            </p>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>I work in software and I forget stuff so I'm going to write it down.</p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
