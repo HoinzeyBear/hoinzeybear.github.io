@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Filtering arrays / lists
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Filtering arrays / lists</h1>
+            <p class="post-date">24<sup>th</sup> April 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Every application is going to need to filter a collection at some point, this is a quick code dump of how to do that 
+                    in Java, Kotlin & Javascript. This is primarily looking at Arrays and Lists, not Maps. All examples are going to work off 
+                    the below list of seasonal fruit and will filter them by their seasons. All of these examples lead to a new collection being
+                    created.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-4">
+                    <div class="cb-header">Kotlin</div>
+                    <div class="cb-header">Java</div>
+                    <div class="cb-header">Javascript</div>
+                    <div class="cb-header">Fruit Model</div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-kotlin">
+    fun getAutumnFruit(fruitList : Collection&lt;SeasonalFruit&gt;): ArrayList&lt;SeasonalFruit&gt; {
+        //using a for loop
+        val result = arrayListOf&lt;SeasonalFruit&gt;()
+        for(fruit in fruitList) {
+            if(fruit.season == Seasons.AUTUMN) {
+                result.add(fruit)
+            }
+        }
+        return result
+    }
+    //[APPLES, CHERRIES]
+
+    fun getWinterFruit(fruitList : Collection&lt;SeasonalFruit&gt;): ArrayList&lt;SeasonalFruit&gt; {
+        //using filter method on collection
+        return fruitList.filter { it.season == Seasons.WINTER } as ArrayList&lt;SeasonalFruit&gt;
+    }
+    //[LEMONS, PEARS]</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-java">
+    public ArrayList&lt;SeasonalFruit&gt; getSpringFruit(Collection&lt;SeasonalFruit&gt; fruitList) {
+        /*
+        If you are not supporting Java 8 and therefore Lambdas, a for loop is an easy option
+        */
+        ArrayList&lt;SeasonalFruit&gt; result = new ArrayList&lt;&gt;();
+        for(SeasonalFruit fruit: fruitList) {
+            if(fruit.getSeason() == Seasons.SPRING) {
+                result.add(fruit);
+            }
+        }
+        return result;
+    }
+    //[STRAWBERRIES, LIMES, MANGOS]
+
+    public ArrayList&lt;SeasonalFruit&gt; getSummerFruit(Collection&lt;SeasonalFruit&gt; fruitList) {
+        /*
+        If you are using J8 or newer, filtering a steam is most common method
+        */
+        return (ArrayList&lt;SeasonalFruit&gt;) fruitList
+                .stream()
+                .filter(fruit -> fruit.getSeason() == Seasons.SUMMER)
+                .collect(Collectors.toList());
+    }
+    //[ORANGES, BLACKBERRIES]</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-javascript">
+    const fruitList = [
+        {"name": "Strawberries","season": "SPRING"},
+        {"name": "Limes","season": "SPRING"},
+        {"name": "Mangos","season": "SPRING"},
+        {"name": "Oranges","season": "SUMMER"},
+        {"name": "Blackberries","season": "SUMMER"}
+    ]
+
+    const summerFruits = fruitList.filter(fruit => fruit.season === "SUMMER")
+    // [{"name": "Oranges","season": "SUMMER"}, {"name": "Blackberries","season": "SUMMER"}]</code>
+    
+                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-java">
+    enum class SeasonalFruit(val season: Seasons) {
+        STRAWBERRIES(Seasons.SPRING),
+        LIMES(Seasons.SPRING),
+        MANGOS(Seasons.SPRING),
+        ORANGES(Seasons.SUMMER),
+        BLACKBERRIES(Seasons.SUMMER),
+        APPLES(Seasons.AUTUMN),
+        CHERRIES(Seasons.AUTUMN),
+        LEMONS(Seasons.WINTER),
+        PEARS(Seasons.WINTER)
+    }
+    
+    enum class Seasons {
+        SPRING,
+        SUMMER,
+        AUTUMN,
+        WINTER
+    }</code>
+                        </pre>
+                    </div>
+                  </div>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>I work in software and I forget stuff so I'm going to write it down.</p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
