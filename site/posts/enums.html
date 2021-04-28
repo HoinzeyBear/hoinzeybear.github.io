@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Enums in Java and Kotlin">
+    <meta property="og:title" content="Enums - hoinzey.dev">
+    <meta property="og:description" content="Basic code structure and usage for enums in Kotlin and Java">
+    <!-- <meta property="og:image" content="https://www.mywebsite.com/image.jpg">
+    <meta property="og:image:alt" content="Image description"> -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hoinzey.dev/posts/enums.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Enums
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Enums</h1>
+            <p class="post-date">1<sup>st</sup> January 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    An enum is a type whose values consist of a fixed set of constants. Before enums 
+                    were introduced a common pattern used was declaring constants using named ints.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-3">
+                    <div class="cb-header">Kotlin</div>
+                    <div class="cb-header">Java</div>
+                    <div class="cb-header">named ints</div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <code class="language-kotlin">
+    enum class GameDifficulty {
+        EASY,
+        MEDIUM,
+        HARD
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <code class="language-java">
+    enum GameDifficulty{
+        EASY,
+        MEDIUM,
+        HARD
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <code class="language-java">
+    //Please stop doing this
+    public static final int DIFFICULTY_EASY = 1;
+    public static final int DIFFICULTY_MEDIUM = 2;
+    public static final int DIFFICULTY_HARD = 3;</code>
+                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    Enums allow you to add methods, fields and interfaces. An enum could potentially
+                    start out as a simple set of constants but end up becoming a full-featured abstraction. 
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-3">
+                    <div class="cb-header">Java - instance variables</div>
+                    <div class="cb-header">Kotlin - switch on self</div>
+                    <div class="cb-header">Java - abstract method</div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <code class="language-java">
+    enum GameDifficulty{
+        EASY(0.5),
+        MEDIUM(1.0),
+        HARD(2.0);
+    
+        public final double bossDifficultyModifier;
+    
+        GameDifficulty(double bossDifficultyModifier) {
+            this.bossDifficultyModifier = bossDifficultyModifier;
+        }
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <code class="language-kotlin">
+    enum class GameDifficulty {
+        EASY,
+        MEDIUM,
+        HARD;
+
+        fun getBossDifficultyModifier(): Double {
+            return when(this){
+                EASY -> 0.5
+                MEDIUM -> 1.0
+                HARD -> 2.0
+            }
+        }
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+    <code class="language-java">
+        enum GameDifficulty{
+            EASY{
+                public double getBossDifficultyModifier() {
+                    return 0.5;
+                }
+            },
+            MEDIUM{
+                public double getBossDifficultyModifier() {
+                    return 1.0;
+                }
+            },
+            HARD{
+                public double getBossDifficultyModifier() {
+                    return 2.0;
+                }
+            };
+        
+            public abstract double getBossDifficultyModifier();
+        }</code>
+                        </pre>
+                    </div>
+                </div>
+                <h3 class="post-h3">EnumMaps</h3>
+                <br/>
+                <p class="post-paragraph">
+                    A special map which must take an Enum as its key. Internally it is represented as an array 
+                    making it extremely fast and efficient
+                </p>
+                <br/>
+                <pre>
+                    <code class="language-javascript">
+    List&lt;PS4Game&gt; gamesCollection = Arrays.asList(
+        new PS4Game("Minecraft", GameDifficulty.EASY),
+        new PS4Game("The Last of Us", GameDifficulty.MEDIUM),
+        new PS4Game("Bloodborne", GameDifficulty.HARD));
+
+    EnumMap&lt;GameDifficulty, Set&lt;PS4Game&gt;&gt; gamesByDifficulty = gamesCollection
+        .stream()
+        .collect(groupingBy(p -> p.gameDifficulty,
+                () -> new EnumMap&lt;&gt;(GameDifficulty.class), toSet()));
+    //{EASY=[Minecraft: EASY], 
+    //MEDIUM=[The Last of Us: MEDIUM], 
+    //HARD=[Bloodborne: HARD]}</code>
+                </pre>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>I work in software and I forget stuff so I'm going to write it down.</p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
