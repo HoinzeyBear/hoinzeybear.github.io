@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Some code on how Android's viewmodel works">
+    <meta property="og:title" content="Android - Viewmodel">
+    <meta property="og:description" content="Some code on how Android's viewmodel works">
+    <!-- <meta property="og:image" content="https://www.mywebsite.com/image.jpg">
+    <meta property="og:image:alt" content="Image description"> -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:url" content="https://hoinzey.dev/posts/android-viewmodel.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Android: ViewModel
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Android: ViewModel</h1>
+            <p class="post-date">30<sup>th</sup> April 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Viewmodels were introduced, in part, to help us deal with configuration changes.
+                    A configuration change causes your activity to be torn down and started again. Applications
+                    can take advantage of this by introducing different layouts and functionality on tablets when
+                    they are put into landscape
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Configuration changes can also be a pain in the arse however. Viewmodels are helpful as 
+                    they let us store some of our UI-related data outside of the activities lifecycle. <a href="#resources">Below</a>
+                    are links to some posts which go into more detail
+                </p>
+                <br/>
+                <h3 class="post-h3">An Example</h3>
+                <p class="post-paragraph">
+                    You can see viewmodels working with very little code. A text field holding a number
+                    and a screen rotation will do the job just fine. When you rotate the screen without using
+                    a viewmodel you'll lose the value. Below however the value is stored in the viewmodel which
+                    survives the configuration change, problem solved.
+                </p>
+                <br/>
+                <br/>
+                <div class="code-block-wrapper cbw-4">
+                    <div class="cb-header">Activity</div>
+                    <div class="cb-header">Viewmodel</div>
+                    <div class="cb-header">Portrait</div>
+                    <div class="cb-header">Landscape</div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-kotlin">
+    class ViewModelLiveDataActivity : AppCompatActivity() {
+
+        lateinit var numberGenerator: ViewModelWithLiveData
+    
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_view_model_live_data)
+            supportActionBar?.hide()
+    
+            numberGenerator = ViewModelProvider(this).get(ViewModelWithLiveData::class.java)
+    
+            numberGenerator.getNumber().observe(this, Observer<String> { number ->
+                livedatatv.text = number
+            })
+    
+            livedatabtn.setOnClickListener {
+                numberGenerator.generateRandomNumber()
+            }
+        }
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-kotlin">
+    class ViewModelWithLiveData : ViewModel() {
+
+        private var number: MutableLiveData<String> = MutableLiveData("")
+    
+        fun getNumber(): MutableLiveData<String> {
+            return number
+        }
+    
+        fun generateRandomNumber() {
+            Log.d(TAG, " generateRandomNumber()")
+            val random = Random
+            number.value = "" + random.nextInt(0, 10)
+        }
+    
+        companion object {
+            val TAG = "hoinzey-viewmodel"
+        }
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <img src="../assets/viewmodel_portrait_s.png" >
+                    </div>
+                    <div class="code-block cb-4">
+                        <img src="../assets/viewmodel_landscape_s.png" >
+                    </div>
+                </div>
+                <p class="post-paragraph">
+                    Aliquam eget velit vitae odio elementum porttitor sed nec diam. Fusce a lacus suscipit, feugiat mauris in,
+                     auctor augue. Quisque at metus erat. Nam placerat nisl vel ante efficitur efficitur. Suspendisse ornare turpis
+                      non consequat tempus. Proin nibh eros, aliquet quis dui nec, facilisis facilisis nisi. Donec eu faucibus metus.
+                      Donec hendrerit scelerisque tempor. Etiam eu aliquam nibh, eu posuere turpis. Class aptent taciti sociosqu 
+                      ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean dignissim orci mi, a ullamcorper quam 
+                      commodo eget. Quisque sagittis odio sit amet tincidunt ornare.
+                </p>
+                <h3 class="post-h3">Resources</h3>
+                <p class="post-paragraph">
+                    First time I was learning about viewmodels I found some of these resources 
+                    useful, hopefully you can too
+                </p>
+                <ul id="resources">
+                    <li>
+                        <a href="https://developer.android.com/reference/androidx/lifecycle/ViewModel">Official docs</a>
+                    </li>
+                    <li>
+                        <a href="https://medium.com/androiddevelopers/viewmodels-a-simple-example-ed5ac416317e">Lyla Fujiware blog</a>
+                    </li>
+                    <li>
+                        <a href="https://blog.mindorks.com/android-viewmodels-under-the-hood">Mind orks</a>
+                    </li>
+                </ul>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
