@@ -51,10 +51,9 @@
                 <p class="post-paragraph">
                     You can see viewmodels working with very little code. A text field holding a number
                     and a screen rotation will do the job just fine. When you rotate the screen without using
-                    a viewmodel you'll lose the value. Below however the value is stored in the viewmodel which
-                    survives the configuration change, problem solved.
+                    a viewmodel you'll lose the value. Below, the value is stored in the viewmodel which
+                    survives the configuration change, problem solved. <a target="_blank" href="https://github.com/HoinzeyBear/learning/tree/master/app/src/main/java/com/example/learning/viewmodel">Code found here.</a>
                 </p>
-                <br/>
                 <br/>
                 <div class="code-block-wrapper cbw-4">
                     <div class="cb-header">Activity</div>
@@ -69,9 +68,7 @@
         lateinit var numberGenerator: ViewModelWithLiveData
     
         override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_view_model_live_data)
-            supportActionBar?.hide()
+            ...
     
             numberGenerator = ViewModelProvider(this).get(ViewModelWithLiveData::class.java)
     
@@ -98,13 +95,8 @@
         }
     
         fun generateRandomNumber() {
-            Log.d(TAG, " generateRandomNumber()")
             val random = Random
             number.value = "" + random.nextInt(0, 10)
-        }
-    
-        companion object {
-            val TAG = "hoinzey-viewmodel"
         }
     }</code>
                         </pre>
@@ -116,14 +108,114 @@
                         <img src="../assets/viewmodel_landscape_s.png" >
                     </div>
                 </div>
+                <br/>
+                <h2 class="post-h2">Multiple screens, one viewmodel</h2>
                 <p class="post-paragraph">
-                    Aliquam eget velit vitae odio elementum porttitor sed nec diam. Fusce a lacus suscipit, feugiat mauris in,
-                     auctor augue. Quisque at metus erat. Nam placerat nisl vel ante efficitur efficitur. Suspendisse ornare turpis
-                      non consequat tempus. Proin nibh eros, aliquet quis dui nec, facilisis facilisis nisi. Donec eu faucibus metus.
-                      Donec hendrerit scelerisque tempor. Etiam eu aliquam nibh, eu posuere turpis. Class aptent taciti sociosqu 
-                      ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean dignissim orci mi, a ullamcorper quam 
-                      commodo eget. Quisque sagittis odio sit amet tincidunt ornare.
+                    A viewmodel can be instantiated from an activity and referenced from several fragments
+                    which may represent multiple screens in your application. It uses databinding to update the
+                    UI dynamically and also handle click events
                 </p>
+                <br/>
+                <p class="post-paragraph">
+                    Doing this part of the post actually gave a good reminder of why I started this site. I use 
+                    databiniding every day in work but most of those pages are long-standing and setup. When I went 
+                    to use databining here however I quickly realised that I'd forgotten how to properly use databinding 
+                    when it wasn't set up properly
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    You can find the code <a  target="_blank" href="https://github.com/HoinzeyBear/learning/tree/master/app/src/main/java/com/example/learning/viewmodel/multiple">here</a>
+                </p>
+                <div class="code-block-wrapper cbw-4">
+                    <div class="cb-header">Activity</div>
+                    <div class="cb-header">Fragment 1</div>
+                    <div class="cb-header">Fragment layout</div>
+                    <div class="cb-header">Screen image</div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-kotlin">
+    class MultipleFragmentViewmodelActivity : AppCompatActivity() {
+
+        lateinit var numberGenerator: ViewModelWithLiveData
+    
+        override fun onCreate(savedInstanceState: Bundle?) {
+            ..
+            numberGenerator = ViewModelProvider(this).get(ViewModelWithLiveData.TAG, ViewModelWithLiveData::class.java)
+    
+            val fragmentOne = MultipleViewmodelFragOne()
+            val fragmentTwo = MultipleViewmodelFragTwo()
+    
+            val fragmentManager = supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+    
+            transaction
+                    .add(R.id.fragmentOne, fragmentOne, "fragmentOne")
+                    .add(R.id.fragmentTwo, fragmentTwo, "fragmentTwo")
+                    .commit()
+        }
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-kotlin">
+    class MultipleViewmodelFragOne : Fragment() {
+
+        lateinit var numberGenerator: ViewModelWithLiveData
+    
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            numberGenerator = ViewModelProvider(requireActivity()).get(ViewModelWithLiveData.TAG, ViewModelWithLiveData::class.java)
+        }
+    
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                                    savedInstanceState: Bundle?): View {
+            val binding = inflate&lt;FragmentViewmodelFragOneBinding&gt;(inflater, R.layout.fragment_viewmodel_frag_one, container, false)
+            binding.viewModel = numberGenerator
+            binding.lifecycleOwner = requireActivity()
+            return binding.root
+        }
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <pre>
+                            <code class="language-xml">
+    &lt;layout
+    ... ;&gt;
+
+    &lt;data&gt;
+        &lt;variable
+            name=&quot;viewModel&quot;
+            type=&quot;com.example.learning.viewmodel.ViewModelWithLiveData&quot; /&gt;
+    &lt;/data&gt;
+
+        &lt;FrameLayout
+        ...
+        tools:context=&quot;.viewmodel.multiple.MultipleViewmodelFragOne&quot;&gt;
+
+        &lt;androidx.constraintlayout.widget.ConstraintLayout
+            ... &gt;
+
+                &lt;TextView
+                    android:text=&quot;@={viewModel.number}&quot;
+                    ... /&gt;
+
+                &lt;Button
+                    android:onClick=&quot;@{() -&gt; viewModel.generateRandomNumber()}&quot;
+                    ... /&gt;
+
+            &lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
+
+        &lt;/FrameLayout&gt;
+
+    &lt;/layout&gt;</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <img src="../assets/viewmodel_multiple_frags_s.png" >
+                    </div>
+                </div>
                 <h3 class="post-h3">Resources</h3>
                 <p class="post-paragraph">
                     First time I was learning about viewmodels I found some of these resources 
