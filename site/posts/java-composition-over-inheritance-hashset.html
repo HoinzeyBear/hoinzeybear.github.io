@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="This is an example in Java, using a Hashset to show why composition is preferable over inheritance">
+    <meta property="og:title" content="Java: Composition > inheritance (HashSet example)">
+    <meta property="og:description" content="This is an example in Java, using a Hashset to show why composition is preferable over inheritance">
+    <!-- <meta property="og:image" content="https://www.mywebsite.com/image.jpg">
+    <meta property="og:image:alt" content="Image description"> -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:url" content="https://hoinzey.dev/posts/java-composition-over-inheritance-hashset.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Composition > Inheritance (HashSet example)
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Composition > Inheritance (HashSet example)</h1>
+            <p class="post-date">12<sup>th</sup> May 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    It is much easier to use inheritance incorrectly than to use it correctly. Don't get me wrong, you can have classes that
+                    inherit, work fine and are some of your favorite classes, I get it. But you should only inherit from classes which have been 
+                    explicitly designed to be inherited from
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    I'm going to go through a quick example using a <strong>HashSet</strong> - Imagine for whatever reason you want to count how many times you add something
+                    to this hashset. You sit at your desk and thing <em>"bazinga!"</em> and come up with a piece of code like this:
+                </p>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">CountedHashSet</div>
+                    <div class="cb-header">main</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                            <code class="language-java">
+    public class CountedHashSet&lt;E&gt; extends HashSet&lt;E&gt; {
+
+        private int addCount = 0;
+
+        public CountedHashSet() {}
+
+        public CountedHashSet(int initCap, float loadFactor) {
+            super(initCap, loadFactor);
+        }
+
+        @Override
+        public boolean add(E e) {
+            addCount++;
+            return super.add(e);
+        }
+
+        @Override
+        public boolean addAll(Collection&lt;? extends E&gt; c) {
+            addCount += c.size();
+            return super.addAll(c);
+        }
+
+        public int getAddCount() {
+            return addCount;
+        }
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                            <code class="language-java">
+    CountedHashSet<String> chocolateBars = new CountedHashSet&lt;&gt;();
+    chocolateBars.addAll(List.of("Cadburys", "Hersheys", "Lindt"));
+
+    System.out.println(chocolateBars.getAddCount());
+    // 6</code>
+                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    You would expect this to print out 3, but it prints out 6. This is because the <code class="emph">addAll()</code> call is implemented
+                    on top of its <code class="emph">add()</code> method. So we count the size of the given list, then end up counting again each time it is 
+                    actually added. We could simply remove the count from <code class="emph">addAll()</code>, or override it and loop through the list given and 
+                    call the <code class="emph">add()</code> method but the very fact we are jumping through so many hoops is itself a sign of danger.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    If we make those changes our class will be fragile and if a new version of Java comes out that alters how its <code class="emph">add()</code> 
+                    or <code class="emph">addAll()</code> methods behave it could break our class even though our code was not altered at all.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    So instead of extending an existing class we are going to <strong>create a new class with a private field that references an instance of 
+                    the existing class</strong>. Designing a class like this is called composition.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">ComposedCountedSet</div>
+                    <div class="cb-header">ForwardingSet</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                            <code class="language-java">
+    public class ComposedCountedSet&lt;E&gt; extends ForwardingSet&lt;E&gt;{
+
+        private int addCount = 0;
+    
+        public ComposedCountedSet(Set&lt;E&gt; set) {
+            super(set);
+        }
+    
+        @Override
+        public boolean add(E e) {
+            addCount++;
+            return super.add(e);
+        }
+    
+        @Override
+        public boolean addAll(Collection&lt;? extends E&gt; c) {
+            addCount += c.size();
+            return super.addAll(c);
+        }
+    
+        public int getAddCount() {
+            return addCount;
+        }
+    }</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                            <code class="language-java">
+    public class ForwardingSet&lt;E&gt; implements Set&lt;E&gt; {
+
+        private final Set&lt;E&gt; set; // &lt;-- Composition
+    
+        public ForwardingSet(Set&lt;E&gt; set) {
+            this.set = set;
+        }
+    
+        @Override
+        public int size() { return set.size(); }
+    
+        @Override
+        public boolean isEmpty() { return set.isEmpty(); }
+    
+        @Override
+        public boolean contains(Object o) { return set.contains(o); }
+    
+        @Override
+        public Iterator&lt;E&gt; iterator() { return set.iterator(); }
+    
+        @Override
+        public Object[] toArray() { return set.toArray(); }
+    
+        @Override
+        public &lt;T&gt; T[] toArray(T[] a) { return set.toArray(a); }
+    
+        @Override
+        public boolean add(E e) { return set.add(e); }
+    
+        @Override
+        public boolean remove(Object o) { return set.remove(o); }
+    
+        @Override
+        public boolean containsAll(Collection&lt;?&gt; c) { return set.containsAll(c); }
+    
+        @Override
+        public boolean addAll(Collection&lt;? extends E&gt; c) { return set.addAll(c); }
+    
+        @Override
+        public boolean retainAll(Collection&lt;?&gt; c) { return set.retainAll(c); }
+    
+        @Override
+        public boolean removeAll(Collection&lt;?&gt; c) { return set.removeAll(c); }
+    
+        @Override
+        public void clear() { set.clear(); }
+    }</code>
+                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    Now this could have been achieved in a single class, but this design is powerful as it allows us to use any instance of type 
+                    Set to work with whereas inheritance would require a concrete class and a separate constructor for each type.
+                </p>
+                <h3 class="post-h3">Resources</h3>
+                <p class="post-paragraph">
+                    This post was written after reading Item 18  in Effective Java, third edition by Joshua Bloch. I would highly recommend this 
+                    book from my reading so far and to clarify - I am in no way associated with it.
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
