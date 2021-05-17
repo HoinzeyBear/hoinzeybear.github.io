@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Post and example of using static factories instead of constructors">
+    <meta property="og:title" content="Java: Using static constructors over constructors">
+    <meta property="og:description" content="Post and example of using static factories instead of constructors">
+    <!-- <meta property="og:image" content="https://www.mywebsite.com/image.jpg">
+    <meta property="og:image:alt" content="Image description"> -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:url" content="https://hoinzey.dev/posts/java-static-factories.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Java: Using static constructors over constructors
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Java: Using static constructors over constructors</h1>
+            <p class="post-date">17<sup>th</sup> May 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    The most common way to get an instance of an object is for that class to expose a public constructor. There 
+                    is another tool which I have been using more often recently however and while you won't use it as often as a 
+                    public constructor you should know when it can be used. A static factory method (obviously.. Its the posts title)
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    You don't need to provide a public constructor <em>or</em> a static factory method, you can provide both. Some of 
+                    the advantages to using a static factory method:
+                </p>
+                <ul>
+                    <li>They can have names</li>
+                    <li>Aren't required to create a new object</li>
+                </ul>
+                <br/>
+                <h3 class="post-h3">They can have names</h3>
+                <p class="post-paragraph">
+                    We've all seen classes in our codebase that when you go to create a new instance it takes 8 variables that are sometimes 
+                    not named so clearly. While you can debate the existance of such classes, they're out there. By using a static factory method 
+                    you can make the name of what you are making obvious. Here is a simplified example.
+                </p>
+                
+                <pre>
+<code class="language-java">
+    public class LibraryCard {
+
+        private String name;
+        private int id;
+        private int bookAllowance;
+        private double dailyRate;
+        private double balanceDue;
+        private String returnDate;
+    
+        public LibraryCard(String n, int id, int ba, double dr, double bd, String rd) {
+            //A deliberately bad constructor
+            this.name = n;
+            this.id = id;
+            this.bookAllowance = ba;
+            this.dailyRate = dr;
+            this.balanceDue = bd;
+            this.returnDate = rd;
+        }
+        
+        public static LibraryCard StudentCard(String name, int id) {
+            //Preset for a student card
+            return new LibraryCard(
+                    name, 
+                    id,
+                    4,
+                    0.0,
+                    0.0,
+                    "-");
+        }
+    }</code>
+                </pre>
+                <br/>
+                <h3 class="post-h3">Aren't required to create a new object</h3>
+                <p class="post-paragraph">
+                    Because these static factory methods aren't required to create a new object each 
+                    time they are call, you can cache expensive immutable objects or return pre-constructed 
+                    objects. A good example of this is the <code class="emph">Boolean.valueOf()</code> method 
+                    which never creates an object.
+                </p>
+                <br/>
+                <h2 class="post-h2">Resources</h2>
+                <p class="post-paragraph">
+                    This post was written after reading Item 1  in <i>Effective Java, third edition</i> by Joshua Bloch. I would highly recommend this 
+                    book from my reading so far and to clarify - I am in no way associated with it.
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
