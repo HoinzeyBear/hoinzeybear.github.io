@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="How to do a round button in android">
+    <meta property="og:title" content="How to do a round button in android">
+    <meta property="og:description" content="How to do a round button in android">
+    <!-- <meta property="og:image" content="https://www.mywebsite.com/image.jpg">
+    <meta property="og:image:alt" content="Image description"> -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hoinzey.dev/posts/android-rounded-buttons.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Android: Rounded buttons
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Android: Rounded buttons</h1>
+            <p class="post-date">24<sup>th</sup> May 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    People writing HTML take it for granted how easy it is for them to make a rounded button. Just slap a 
+                    <code class="emph">border-radius-10px</code> on a <i>div</i> and hey presto, child-safe button. 
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    In Android we need to make a separate XML file and then use 
+                    that as the background for our button. 9 lines of code for some rounded corners.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-3">
+                    <div class="cb-header">Roundy xml</div>
+                    <div class="cb-header">Activity xml</div>
+                    <div class="cb-header">Result</div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-xml">
+    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+    &lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+        android:shape=&quot;rectangle&quot;&gt;
+        &lt;solid android:color=&quot;#EEAF5252&quot; /&gt;
+        &lt;corners android:bottomRightRadius=&quot;50dp&quot;
+            android:bottomLeftRadius=&quot;50dp&quot;
+            android:topRightRadius=&quot;50dp&quot;
+            android:topLeftRadius=&quot;50dp&quot;/&gt;
+    &lt;/shape&gt;</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <code class="language-xml">
+    &lt;androidx.appcompat.widget.AppCompatButton
+    ...
+    android:background=&quot;@drawable/rounded_button&quot;/&gt;</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <img src="../assets/rounded_buttons_s.png" >
+                    </div>
+                </div>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
