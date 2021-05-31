@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Post on how to have a button change state on click and focus">
+    <meta property="og:title" content="Android: State changing button">
+    <meta property="og:description" content="Post on how to have a button change state on click and focus">
+    <!-- <meta property="og:image" content="https://www.mywebsite.com/image.jpg">
+    <meta property="og:image:alt" content="Image description"> -->
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hoinzey.dev/posts/android-stage-changing-buttons.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Android: State changing button
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Android: State changing button</h1>
+            <p class="post-date">30<sup>th</sup> May 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    In the <a href="https://hoinzey.dev/posts/android-rounded-buttons.html">previous post</a> I worked out how to make a button roundy in Android. While trying to fix
+                    something else in work I came across <a href="https://stackoverflow.com/questions/1521640/standard-android-button-with-a-different-color/1726352#1726352">this</a> answer to a question on Stack Overflow and thought it was 
+                    a pretty good follow-up post. Sometimes these things just fall into your lap
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    This shows you how you can change the appearance of your drawable depending on it's state. I'm going to continue to use a button though it isn't the ideal 
+                    way to show off focus, a text input or something would be better but I can't be bothered. An important point made under the answer by user <i>mikerowehl</i>:
+                </p>
+                
+                    <blockquote><q>the order of the items in the selector is significant. If you put the &lt;item&gt; with no state filters first in the file it overrides the rest.</q></blockquote>
+                
+                <br/>
+                
+                <div class="code-block-wrapper cbw-4">
+                    <div class="cb-header">The code</div>
+                    <div class="cb-header">Normal button</div>
+                    <div class="cb-header">Focus button</div>
+                    <div class="cb-header">Clicked button</div>
+                    <div class="code-block cb-4">
+                        <pre>
+                    <code class="language-xml">
+                        &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+    &lt;selector
+        xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+
+        &lt;item android:state_pressed=&quot;true&quot; &gt;
+            &lt;shape&gt;
+                &lt;solid android:color=&quot;@color/blog_background&quot; /&gt;
+                &lt;corners android:radius=&quot;50dp&quot; /&gt;
+            &lt;/shape&gt;
+        &lt;/item&gt;
+
+        &lt;item android:state_focused=&quot;true&quot; &gt;
+            &lt;shape&gt;
+                &lt;solid android:color=&quot;@color/blog_orange_highlight&quot; /&gt;
+                &lt;corners android:radius=&quot;50dp&quot; /&gt;
+            &lt;/shape&gt;
+        &lt;/item&gt;
+
+        &lt;item&gt;
+            &lt;shape&gt;
+                &lt;solid android:color=&quot;@color/blood_orange&quot; /&gt;
+                &lt;corners android:radius=&quot;50dp&quot; /&gt;
+            &lt;/shape&gt;
+        &lt;/item&gt;
+    &lt;/selector&gt;</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-4">
+                        <img src="../assets/state_changy_default_s.png" alt="Roundy button with default state">
+                    </div>
+                    <div class="code-block cb-4">
+                        <img src="../assets/state_changy_focus_s.png" alt="Roundy button with focus state">
+                    </div>
+                    <div class="code-block cb-4">
+                        <img src="../assets/state_changy_pressed_s.png" alt="Roundy button with clicked state">
+                    </div>
+                </div>
+                
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
