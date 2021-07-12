@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="post about using Kotlin's by keyword for class delegation">
+    <meta property="og:title" content="Kotlin: Class delegation using by">
+    <meta property="og:description" content="post about using Kotlin's by keyword for class delegation">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hoinzey.dev/posts/kotlin-class-delegation-by">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Kotlin: Class delegation using "by"
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Kotlin: Class delegation using "by"</h1>
+            <p class="post-date">1<sup>st</sup> January 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    In my <a target="_blank" href="https://hoinzey.dev/posts/java-composition-over-inheritance-hashset.html#second_cb">composition over inheritance</a> post
+                    I gave an example using a Forwarding set. The forwarding set is useful but it also contains a huge amount of boilerplate.
+                    In Kotlin however we can achieve the same affect using the <code class="emph">by</code> keyword.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Below is the code from the previous post and how you could achieve the same in far less code using Kotlin.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Old forwarding set</div>
+                    <div class="cb-header">Kotlin delegation</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-java">
+    public class ForwardingSet&lt;E&gt; implements Set&lt;E&gt; {
+
+        private final Set&lt;E&gt; set; // &lt;-- Composition
+    
+        public ForwardingSet(Set&lt;E&gt; set) {
+            this.set = set;
+        }
+    
+        @Override
+        public int size() { return set.size(); }
+    
+        @Override
+        public boolean isEmpty() { return set.isEmpty(); }
+    
+        @Override
+        public boolean contains(Object o) { return set.contains(o); }
+    
+        @Override
+        public Iterator&lt;E&gt; iterator() { return set.iterator(); }
+    
+        @Override
+        public Object[] toArray() { return set.toArray(); }
+    
+        @Override
+        public &lt;T&gt; T[] toArray(T[] a) { return set.toArray(a); }
+    
+        @Override
+        public boolean add(E e) { return set.add(e); }
+    
+        @Override
+        public boolean remove(Object o) { return set.remove(o); }
+    
+        @Override
+        public boolean containsAll(Collection&lt;?&gt; c) { return set.containsAll(c); }
+    
+        @Override
+        public boolean addAll(Collection&lt;? extends E&gt; c) { return set.addAll(c); }
+    
+        @Override
+        public boolean retainAll(Collection&lt;?&gt; c) { return set.retainAll(c); }
+    
+        @Override
+        public boolean removeAll(Collection&lt;?&gt; c) { return set.removeAll(c); }
+    
+        @Override
+        public void clear() { set.clear(); }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+    <code class="language-kotlin">
+        public class ComposedCountedSet&lt;E&gt; extends ForwardingSet&lt;E&gt;{
+
+            private int addCount = 0;
+        
+            public ComposedCountedSet(Set&lt;E&gt; set) {
+                super(set);
+            }
+        
+            @Override
+            public boolean add(E e) {
+                addCount++;
+                return super.add(e);
+            }
+        
+            @Override
+            public boolean addAll(Collection&lt;? extends E&gt; c) {
+                addCount += c.size();
+                return super.addAll(c);
+            }
+        
+            public int getAddCount() {
+                return addCount;
+            }
+        }</code>
+                                        </pre>
+                    </div>
+                </div>
+                
+                <p class="post-paragraph">
+                    That is a substantial difference. Keep in mind that another java class would still need to 
+                    implement that forward set and override the methods as needed, which is what Kotlin manages to do 
+                    without us needing to write another class.
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
