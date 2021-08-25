@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A page giving a brief explanation on lazy initialization in Kotlin">
+    <meta property="og:title" content="Kotlin: lazy init">
+    <meta property="og:description" content="A page giving a brief explanation on lazy initialization in Kotlin">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="kotlin code">
+    <meta property="og:url" content="https://hoinzey.dev/posts/kotlin-lazy-init.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Kotlin: Lazy init
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Kotlin: Lazy init</h1>
+            <p class="post-date">25<sup>th</sup> August 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Lazy initialization is a common pattern where we only create a part of an object the first time it is asked for.
+                    The most obvious reason to do this is that it is an expensive operation to carry out and may not be needed 
+                    immediately after the creation of the object.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Below are 2 examples of how we can do this in Kotlin. We are going to use a dummy Amazon account object and our
+                    lazy value will be our order history. You could easily go to the Amazon site and not view your history, so what 
+                    is the reason to load it the first time you create the user.
+                </p>
+                <br/>
+                <h2 class="post-h2">Using a backing property</h2>
+                <p class="post-paragraph">
+                    Below we use a backing property to achieve our lazy loading. This is a fairly common technique and works well
+                    for our example but if you imagine having several of these in an object it can get cumbersome.
+                </p>
+                <pre>
+                    <code class="language-kotlin">
+    class MyAmazonAccount(val accountId: Long) {
+
+        private var _orderHistory: List<Trash>? = null
+
+        val orderHistory: List<Trash>
+            get() {
+                if(_orderHistory == null) {
+                    _orderHistory = loadOrderHistory(this)
+                }
+
+                return _orderHistory!!
+            }
+    }</code>
+                </pre>
+                <br/>
+                <h2 class="post-h2">Using a delegated property</h2>
+                <p class="post-paragraph">
+                    Lazy returns an object that has a method called getValue with the proper signature, so we can combine this 
+                    with by to create a delegated property. The lazy function is thread-safe by default but you can pass different 
+                    flags to it if you need certain locks or if you don't need it to lock at all.
+                </p>
+                <pre>
+                    <code class="language-kotlin">
+    class MyAmazonAccount(val accountId: Long) {
+
+        val orderHistory by lazy { loadOrderHistory(this) }
+    
+    
+        fun loadOrderHistory(account: MyAmazonAccount): List<Trash>? {
+            return mutableListOf()
+        }
+    }</code>
+                </pre>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
