@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Examples of using JUnit's parameterized tests">
+    <meta property="og:title" content="JUnit: Parameterized tests">
+    <meta property="og:description" content="Examples of using JUnit's parameterized tests">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/junit-parameterized-tests.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        JUnit: Parameterized tests
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">JUnit: Parameterized tests</h1>
+            <p class="post-date">15<sup>th</sup> September 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    This won't go into exhaustive detail or even cover all the different ways you can use parameterized tests 
+                    in JUnit. For that kind of thing, go check out the official <a href="https://junit.org/junit5/docs/current/user-guide/#writing-tests-parameterized-tests">docs</a> 
+                    or this great post from the team behind  <a href="https://www.baeldung.com/parameterized-tests-junit-5">Baeldung</a>.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    I'm just going to put down examples of some of the ones I use most so when I forget how to do them, I can come
+                    back here to copy and paste.
+                </p>
+                <br/>
+                <h2 class="post-h2">Value Source</h2>
+                <p class="post-paragraph">
+                    Using the "@ValueSource" annotation we can pass in a list of literal values. The test will be run once 
+                    for each value. Notably you can't pass "null" into the test in this way but the second test below 
+                    shows you how.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Annotating the test with <code class="emph">@EmptySource</code> or <code class="emph">@NullSource</code> passes in empty/null values. 
+                    To make it quicker to do both they also added the <code class="emph">@NullAndEmptySource</code>
+                </p>
+                <pre>
+                    <code class="language-java">
+    @ParameterizedTest
+    @ValueSource(ints = {2, 18, 86, 1012})
+    public void testNumbersAreEven(int in) {
+        assert(NumberUtils.isEven(in));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" "})
+    public void testNullValuesThrowException(String in) {
+        assertThrows(IllegalArgumentException.class, () -> NumberUtils.isEven(in));
+    }</code>
+                </pre>
+                <br/>
+                <h2 class="post-h2">Csv Source</h2>
+                <p class="post-paragraph">
+                    Using the <code class="emph">@CsvSource</code> annotation we can do two different executions. We can pass in a single 
+                    comma separated list of values which will be executed one-by-one similar to <code class="emph">@ValueSource</code>. We can 
+                    also pass in an array of comma-separated values where the first is the input and the second is the 
+                    expected output.
+                </p>
+                <pre>
+                    <code class="language-java">
+    @ParameterizedTest
+    @CsvSource({"6,18,44,1012"})
+    public void testNumbersAreEven(String in) {
+        assert(NumberUtils.isEven(in));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"the godFathEr,the_godfather","will the wOnkA,will_the_wonka"})
+    public void testStringNormalization(String in, String expected) {
+        assertEquals(StringUtils.normalize(in), expected);
+    }</code>
+                </pre>
+                <br/>
+                <h2 class="post-h2">Method Source</h2>
+                <p class="post-paragraph">
+                    Using the <code class="emph">@MethodSource</code> allows us to pass in more complicated objects. If you are only passing in a 
+                    single value to check then you don't need to create Arguments as seen below.
+                </p>
+                <pre>
+                <code class="language-java">
+    @ParameterizedTest
+    @MethodSource("getStringsToNormalize")
+    public void testStringNormalizationFromMethod(final String in, final String expected) {
+        assertEquals(StringUtils.normalize(in), expected);
+    }
+
+    private static Stream&lt;Arguments&gt; getStringsToNormalize() {
+        return Stream.of(
+                Arguments.of("thE GoDFathEr", "the_godfather"), // null strings should be considered blank
+                Arguments.of("thE MarVellous UnivERSE", "the_marvellous_universe")
+        );
+    }</code>
+</pre>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
