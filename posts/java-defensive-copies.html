@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Page description">
+    <meta property="og:title" content="Java - Defensive copies">
+    <meta property="og:description" content="Little page showing a defensive copy in java">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="java code">
+    <meta property="og:url" content="https://hoinzey.dev/posts/java-defensive-copies.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Java - Defensive copies
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Java - Defensive copies</h1>
+            <p class="post-date">12<sup>th</sup> November 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Making defensive copies of objects helps us ensure that bad clients, malicious actors or other developers
+                    don't accidentally/deliberately cause problems with our code's execution. If your API takes in mutable data 
+                    then you should make a defensive copy of that to safeguard your code.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Example: No defense</div>
+                    <div class="cb-header">Client Bridge</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-java">
+    public static void main(String[] args) {
+        DefendEvent event = new DefendEvent("Delivery", 1);
+
+        ClientBridge clientBridge = new ClientBridge(event);
+        clientBridge.printDetails();
+        //Event: Delivery of type: 1
+
+        event.setEventName("Dispatch");
+        event.setEventType(2);
+
+        clientBridge.printDetails();
+        //Event: Delivery of type: 2 => Our bridge's object has been interfered with
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-java">
+    public class ClientBridge {
+
+        private DefendEvent defendEvent;
+    
+        public ClientBridge(DefendEvent defendEvent) {
+            this.defendEvent = defendEvent;
+            //...validate inputs...
+        }
+    
+        public void printDetails() {
+            System.out.println("Event: " + defendEvent.getEventName() + " of type: " + defendEvent.getEventType());
+        }
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+                </pre>
+                <br/>
+                <p class="post-paragraph">
+                    Below we create a new object using the value provided. This keeps the value safe and we can now 
+                    validate the input knowing it can't be interfered with.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Header 1</div>
+                    <div class="cb-header">Header 2</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-java">
+    public static void main(String[] args) {
+        DefendEvent event = new DefendEvent("Delivery", 1);
+
+        ClientBridge clientBridge = new ClientBridge(event);
+        clientBridge.printDetails();
+        //Event: Delivery of type: 1
+
+        event.setEventName("Dispatch");
+        event.setEventType(2);
+
+        clientBridge.printDetails();
+        //Event: Delivery of type: 1
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-java">
+    public class ClientBridge {
+
+        private DefendEvent defendEvent;
+    
+        public ClientBridge(DefendEvent defendEvent) {
+            this.defendEvent = new DefendEvent(defendEvent.getEventName(), defendEvent.getEventType());
+            //...validate inputs...
+        }
+
+        public DefendEvent getDefendEvent() {
+            return new DefendEvent(defendEvent.getEventName(), defendEvent.getEventType());
+        }
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
