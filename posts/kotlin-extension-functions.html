@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="I am talking about Kotlin extension functions">
+    <meta property="og:title" content="Kotlin: Extension functions">
+    <meta property="og:description" content="I am talking about Kotlin extension functions">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hoinzey.dev/kotlin-extension-functions">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Kotlin Extension functions
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Kotlin: Extension functions</h1>
+            <p class="post-date">17<sup>th</sup> December 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Extension functions allow us to extend the functionality of a class without having to inherit from them 
+                    or change the class itself. This is useful if you want to add a custom method to String for example but its 
+                    also useful to keep your Model objects neat and only keep the minimum amount of logic in them as needed.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    The syntax is to put the name of the Class or Interface you are extending, followed by a dot, and the name of the 
+                    method you are adding. The class is the <em>receiver type</em> and the function is the <em>receiver object</em>
+
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    The example below shows us extending the functionality of <code class="emph">ElectronicProduct</code> within the <code class="emph">CheckoutHelper</code> class.
+                    This function could easily have been represented as a standard function which just takes the Product as a parameter, but hey
+                    you sit there and try come up with amazing original ideas.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">CheckoutHelper</div>
+                    <div class="cb-header">ElectronicProduct</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    class CheckoutHelper {
+
+        fun calculatePrice(products: List<ElectronicProduct>): Int {
+            var total = 0
+            for(product in products) {
+                total += if(product.isOnSale()) {
+                    product.price / 2
+                } else product.price
+            }
+            return total
+        }
+    
+        fun ElectronicProduct.isOnSale(): Boolean {
+            return productRef.startsWith("SAM")
+                    && percentInStock &lt;= 15
+        }
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    data class ElectronicProduct(
+        var productId: Int = 0,
+        var name: String,
+        var productRef: String,
+        var price: Int,
+        var percentInStock: Int)</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    Note that extension functions don't allow you to break encapsulation. You can't access private or protected 
+                    members of the class.
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
