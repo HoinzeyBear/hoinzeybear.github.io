@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Page description">
+    <meta property="og:title" content="Kotlin: Coroutines part 1 - Hoinzey.dev">
+    <meta property="og:description" content="Some content around the basic operations with coroutines">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hoinzey.dev/kotlin-coroutines-p1">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Kotlin: Coroutines - builders
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Kotlin: Coroutines - builders</h1>
+            <p class="post-date">30<sup>th</sup> December 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    There is a lot to cover when it comes to coroutines. This post just looks at builders.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    There are however a lot of talented people who have put a lot of time into documentation making this powerful feature
+                    as welcoming as possible. Try out <a target="_blank" href="https://kotlinlang.org/docs/coroutines-basics.html">Kotlin's own docs</a>, 
+                    the team at <a target="_blank" href="https://www.baeldung.com/kotlin/coroutines">Baeldung</a>
+                     or maybe <a target="_blank" href="https://blog.mindorks.com/mastering-kotlin-coroutines-in-android-step-by-step-guide">MindOrks</a>
+                </p>
+                <br/>
+                <h2 class="post-h2">Builders</h2>
+                <p class="post-paragraph">
+                    The first step in creating a new coroutine is to use one of the available builders. The next step is picking the right builder 
+                    for your needs. 
+                </p>
+                <h3 class="post-h3">runBlocking</h3>
+                <p class="post-paragraph">
+                    The quick among you might guess what this builder does. It blocks the current thread while it executes any suspending functions it contains. 
+                    It is not a suspending function which means it can be called from normal functions. Primarily used when writing tests or giving demonstrations.
+                </p>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Example</div>
+                    <div class="cb-header">runBlocking signature</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    fun waitWhileIDoSomething() = runBlocking {
+        System.out.println("Running on ${Thread.currentThread().name}")//main
+        launch(Dispatchers.IO) {
+            delay(200)
+            System.out.println("Now running on ${Thread.currentThread().name}")//worker-1
+        }
+        System.out.println("And we're back on ${Thread.currentThread().name}")//main
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    fun &lt;T&gt; runBlocking(context: CoroutineContext, block: suspend CoroutineScope.() -> T): T</code>
+                                        </pre>
+                    </div>
+                </div>
+                <h3 class="post-h3">launch</h3>
+                <p class="post-paragraph">
+                    Used when you want to run a process on a separate thread without a return value. It returns 
+                    a <code class="emph">Job</code> instance which can be used to cancel the job if needed.
+                    It is an extension of CoroutineScope so needs one in order to be run.
+                </p>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Example</div>
+                    <div class="cb-header">launch signature</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    suspend fun updateUI() = coroutineScope{
+        launch { 
+            //Update our UI for us
+        }   
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    fun CoroutineScope.launch(
+        context: CoroutineContext = EmptyCoroutineContext,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        block: suspend CoroutineScope.() -> Unit
+    ): Job</code>
+                                        </pre>
+                    </div>
+                </div>
+                <h3 class="post-h3">async</h3>
+                <p class="post-paragraph">
+                    Async is used in the case when a return value is needed. The async calls wrap 
+                    the return value in a Deferred instance which is similar to a Promise or Future from 
+                    other languages. 
+                </p>
+                <p class="post-paragraph">
+                    It is important to remember to call <code class="emph">await()</code> for the results. So important in fact they added 
+                    a method called <code class="emph">withContext</code> to avoid having to call it at all.
+                </p>
+                <div class="code-block-wrapper cbw-3">
+                    <div class="cb-header">Example</div>
+                    <div class="cb-header">async signature</div>
+                    <div class="cb-header">withContext</div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    suspend fun addNumbers() = coroutineScope{
+        val firstSum = async {
+            println(Thread.currentThread().name)
+            add(2,3)
+        }
+        val secondSum = async {
+            println(Thread.currentThread().name)
+            add(27, 14)
+        }
+        println("total is ${firstSum.await() + secondSum.await()}")
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    public fun &lt;T&gt; CoroutineScope.async(
+        context: CoroutineContext = EmptyCoroutineContext,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        block: suspend CoroutineScope.() -> T
+    ): Deferred&lt;T&gt;</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    suspend fun addNumbers() = coroutineScope{
+        val firstSum = withContext(Dispatchers.IO) {
+            println(Thread.currentThread().name)
+            add(2,3)
+        }
+        val secondSum = withContext(Dispatchers.IO) {
+            println(Thread.currentThread().name)
+            add(27, 14)
+        }
+        println("total is ${firstSum + secondSum}")
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+                <h3 class="post-h3">The coroutineScope builder</h3>
+                <p class="post-paragraph">
+                    In the above examples you will see the use of this builder. This function will wait 
+                    for all included coroutines to finish which makes it very useful. This is commonly used 
+                    as part of a pattern called "Structured concurrency" where you run all your coroutines within a 
+                    context. 
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
