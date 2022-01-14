@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Some notes on the use of Room Relation for one to many objects">
+    <meta property="og:title" content="Android: Room one to many objects">
+    <meta property="og:description" content="Some notes on the use of Room Relation for one to many objects">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hoinzey.dev/android-room-one-to-many-objects.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Android: Room one to many objects
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Post name goes here</h1>
+            <p class="post-date">13<sup>th</sup> January 2021</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    I first discovered the tools in this post reading <a target="_blank" href="https://medium.com/androiddevelopers/7-pro-tips-for-room-fbadea4bfbd1#4f14" >this blog</a>
+                    by Florina Muntenscu who puts out a lot of amazing content. Find her on twitter.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    There are plenty of scenarios where you build a database schema that has a one-to-many relationship.
+                    In this example I am using Game Developer's and their games. A developer can have many games.
+                    Modelled below.
+                </p>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Game developer</div>
+                    <div class="cb-header">Game</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    @Entity(tableName = "gamedevelopers")
+    data class GameDeveloper(
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "developerid")
+        var developerId: Long = 0,
+        var developerName: String
+    )</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    @Entity(
+        tableName = "playstationgames",
+        foreignKeys = [ForeignKey(
+            entity = GameDeveloper::class,
+            parentColumns = arrayOf("developerid"),
+            childColumns = arrayOf("developerid")
+        )]
+    )
+    data class PlaystationGame(
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "gameid")
+        var gameId: Long = 0,
+        var gameName: String,
+        @ColumnInfo(name = "developerid")
+        val developerId: Long
+    )</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    It is common to take data like this and represent it in a list. In this example it means that we need 
+                    to do two queries in order to get the developers and their games. So you'll end up calling queries like below
+                    to first get the developers and then the list of games for them.
+                </p>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">DAO queries</div>
+                    <div class="cb-header">Example usage</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    @Query("select * from gamedevelopers")
+    fun getAllDevelopers(): List&lt;GameDeveloper&gt;
+
+    @Query("select * from playstationgames where developerid = :id")
+    fun getAllGamesForDeveloper(id: Long): List&lt;PlaystationGame&gt;</code>
+                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    fun logDevelopersAndGamesV1() {
+        val developers = gameDeveloperDAO.getAllDevelopers()
+        for (dev in developers) {
+            val games = playstationGameDAO.getAllGames()
+            Log.d(TAG, "$dev - $games")
+        }
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    We can create a new class called <code class="emph">DeveloperAndGames</code> which will contain 
+                    our GameDeveloper and its list of games. We do this by adding the <code class="emph">@Relation</code> 
+                    annotation along with some details of the columns to be used. This can only be applied to a List or Set 
+                    of objects.
+                </p>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Updated query</div>
+                    <div class="cb-header">DeveloperAndGames</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    @Query("select * from gamedevelopers")
+    fun getAllDevelopersAndGamesAsFlow(): Flow&lt;List&lt;DeveloperAndGames&gt;&gt;</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    class DeveloperAndGames {
+        @Embedded
+        var gameDeveloper: GameDeveloper? = null
+    
+        @Relation(parentColumn = "developerid", entityColumn = "developerid")
+        var playstationGames: List&lt;PlaystationGame&gt; = ArrayList()
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    Whats also useful is that observing this object as <code class="emph">LiveData</code> will have updates triggered
+                    when either the GameDeveloper or Game tables are updated using this example. You can find more of 
+                    this example <a target="_blank" href="https://github.com/HoinzeyBear/learning/tree/master/app/src/main/java/com/example/learning/advancedroom">here</a>.
+                </p>
+                <pre>
+                    <code class="language-kotlin">
+    var allDevsWithGame: LiveData&lt;List&lt;DeveloperAndGames&gt;&gt; 
+        = gameDeveloperDAO.getAllDevelopersAndGamesAsFlow().asLiveData()
+    //...
+    allDevsWithGame?.observe(this) {
+        logThatDatasetHasChanged()
+    }
+    //...
+    private fun logThatDatasetHasChanged() {
+        Log.d(TAG, "Dataset has changed")
+        Log.d(TAG, "${allDevsWithGame.value}")
+    }
+                    </code>
+                </pre>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
