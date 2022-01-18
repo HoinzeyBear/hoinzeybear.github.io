@@ -171,15 +171,15 @@ aside {
 }
 
 @media only screen and (max-width: 768px) {
-    /* body { max-width: 768px;} */
+    body { max-width: 750px;}
     .aside { order: 1; } 
-    .content, .post { order: 2; max-width: 768px}
+    .content, .post { order: 2; width: 750px}
     .footer { order: 4; }
 }
 
 @media only screen and (max-width: 425px) {
-    /* body { max-width: 425px;} */
+    body { max-width: 410px;}
     .aside { order: 1; } 
-    .content, .post { order: 2; max-width: 425px; }
+    .content, .post, .post-paragraph { order: 2; width: 410px; }
     .footer { order: 4; }
 }
