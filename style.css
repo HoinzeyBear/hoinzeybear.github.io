@@ -171,15 +171,17 @@ aside {
 }
 
 @media only screen and (max-width: 768px) {
-    body { max-width: 750px;}
+    body { max-width: 740px;}
     .aside { order: 1; } 
-    .content, .post { order: 2; width: 750px}
+    .content, .post, .post-paragraph, .container { order: 2; width: 740px}
+    .container {padding: 0px;}
     .footer { order: 4; }
 }
 
 @media only screen and (max-width: 425px) {
-    body { max-width: 410px;}
+    body { max-width: 400px;}
     .aside { order: 1; } 
-    .content, .post, .post-paragraph { order: 2; width: 410px; }
+    .content, .post, .post-paragraph, .container { order: 2; width: 400px; }
+    .container > * {padding: 0px;}
     .footer { order: 4; }
 }
