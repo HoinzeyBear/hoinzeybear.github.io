@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Brief example of the associate helper methods in Kotlin">
+    <meta property="og:title" content="Kotlin - associate">
+    <meta property="og:description" content="Brief example of the associate helper methods in Kotlin">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/kotlin-associate.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Kotlin - associate
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Kotlin: associate helpers</h1>
+            <p class="post-date">21<sup>st</sup> February 2022</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    One of these helpers came to my attention during a recent code review and I thought it was handy, so I'm recording it.
+                    All the following allow you to easily turn a list into a map using an object field as the key, or the object as a key to a field.
+                </p>
+                <br/>
+                <h3 class="post-h3">associate</h3>
+                <br/>
+                <p class="post-paragraph">
+                    Pass in a transform to get back a Map of the first half of the email addresses to the second half (for whatever reason).
+                </p>
+                <br/>
+                <pre>
+                    <code class="language-kotlin">
+    fun run() {
+        val usersList = mutableListOf&lt;User&gt;()
+        usersList.apply {
+            add(User(24, "Hoinzey", "hoin@zey.dev"))
+            add(User(631, "Bear", "be@ar.dev"))
+            add(User(2735, "Towers", "tow@ers.dev"))
+        }
+
+        val splitEmail = usersList.associate {
+            it.email.split("@")
+                .let { (firstHalf, secondHalf) -> firstHalf to secondHalf }
+        }
+        println(splitEmail)
+    }
+    //{hoin=zey.dev, be=ar.dev, tow=ers.dev}</code>
+                </pre>
+                <br/>
+                <h3 class="post-h3">associateBy</h3>
+                <br/>
+                <p class="post-paragraph">
+                    In this example we are passing the field we want to use as our key in the map to the object as the value.
+                </p>
+                <br/>
+                <pre>
+                    <code class="language-kotlin">
+    fun run() {
+        val usersList = mutableListOf&lt;User&gt;()
+        usersList.apply {
+            add(User(24, "Hoinzey", "hoin@zey.dev"))
+            add(User(631, "Bear", "be@ar.dev"))
+            add(User(2735, "Towers", "tow@ers.dev"))
+        }
+
+        val userMap = usersList.associateBy { it.id }
+        println(userMap)
+    }
+    //{24=User(id=24, name=Hoinzey, email=hoin@zey.dev), 
+    //631=User(id=631, name=Bear, email=be@ar.dev), 
+    //2735=User(id=2735, name=Towers, email=tow@ers.dev)}</code>
+                </pre>
+                <br/>
+                <h3 class="post-h3">associateWith</h3>
+                <br/>
+                <p class="post-paragraph">
+                    Here we are doing the opposite, where the object is the Key and the value is the field we pass in.
+                </p>
+                <br/>
+                <pre>
+                    <code class="language-kotlin">
+    fun run() {
+        val usersList = mutableListOf&lt;User&gt;()
+        usersList.apply {
+            add(User(24, "Hoinzey", "hoin@zey.dev"))
+            add(User(631, "Bear", "be@ar.dev"))
+            add(User(2735, "Towers", "tow@ers.dev"))
+        }
+        
+        val userToEmail = usersList.associateWith { it.email }
+        println(userToEmail)
+    }
+//{User(id=24, name=Hoinzey, email=hoin@zey.dev)=hoin@zey.dev, 
+//User(id=631, name=Bear, email=be@ar.dev)=be@ar.dev, 
+//User(id=2735, name=Towers, email=tow@ers.dev)=tow@ers.dev}</code>
+                </pre>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
