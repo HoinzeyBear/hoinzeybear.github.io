@@ -165,9 +165,11 @@ aside {
     .content, .post, .post-paragraph { 
         order: 2; 
         flex: 2; 
-        width: 70%; }
+        width: 85%; }
     .footer { order: 4; }
-    .post {max-width: 1000px;}
+    .post {max-width: 1000px;margin:0 auto;}
+    /* pre{width: fit-content;} */
+    /* pre code{padding-right: 150px;} */
  }
 
 @media all and (min-width: 1024px) and (max-width: 1660px) {
