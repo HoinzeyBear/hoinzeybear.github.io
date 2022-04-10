@@ -9,8 +9,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Page description">
-    <meta property="og:title" content="Jetpack Compose: Columns - Hoinzey.dev">
-    <meta property="og:description" content="Post on android jetpack compose columns">
+    <meta property="og:title" content="Jetpack Compose: Rows - Hoinzey.dev">
+    <meta property="og:description" content="Post on android jetpack compose rows">
     <meta property="og:locale" content="en_GB">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.mywebsite.com/page">
@@ -18,7 +18,7 @@
     <script async src="../prism.js"></script>
     <script async src="../script.js"></script>
     <title>
-        Jetpack Compose: Columns
+        Jetpack Compose: Rows
     </title>
 </head>
 <body>
@@ -28,33 +28,33 @@
             <h2>Javascript. Kotlin. Android. Java</h2>
         </header>
         <div class="post">
-            <h1 class="post-h1">Jetpack Compose: Columns</h1>
-            <p class="post-date">3<sup>rd</sup> April 2022</p>
+            <h1 class="post-h1">Jetpack Compose: Rows</h1>
+            <p class="post-date">10<sup>th</sup> April 2022</p>
             <article class = "post-article">
                 <p class="post-paragraph">
-                    Columns are one of the fundamental building blocks of compose. Think of them like a linear layout with vertical arrangement.
-                    Lets take a look at what makes a column:
+                    Rows are one of the fundamental building blocks of compose. Think of them like a linear layout with a horizontal arrangement.
+                    Lets take a look at what makes a row:
                 </p>
                 <br/>
                 <pre>
                     <code class="language-kotlin">
     @Composable
-    inline fun Column(
+    inline fun Row(
         modifier: Modifier = Modifier,
-        verticalArrangement: Arrangement.Vertical = Arrangement.Top,
-        horizontalAlignment: Alignment.Horizontal = Alignment.Start,
-        content: @Composable ColumnScope.() -> Unit )</code>
+        horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
+        verticalAlignment: Alignment.Vertical = Alignment.Top,
+        content: @Composable RowScope.() -> Unit)</code>
                 </pre>
                 <br/>
                 <p class="post-paragraph">
-                    As columns are often used as a container for other content, we have access to a vertical arrangement and horizontal alignment properties which we can set.
-                    There is also <code class="emph">ColumnScope</code> which gives the column's children access to some more values which can be used to influence their layout and display.
+                    As rows are often used as a container for other content, we have access to a vertical alignment and horizontal arrangement properties which we can set.
+                    There is also <code class="emph">RowScope</code> which gives the row's children access to some more values which can be used to influence their layout and display.
                 </p>
                 <br/>
-                <h2 class="post-h2">Vertical arrangement</h2>
-                <h2 class="post-h2">Top, Center, Bottom</h2>
+                <h2 class="post-h2">Vertical alignment</h2>
+                <h2 class="post-h2">Start, Center, Bottom</h2>
                 <p class="post-paragraph">
-                    These values are pretty self-explanatory. They will stick the children vertically to the top center or bottom of the column
+                    These values are pretty self-explanatory. They will stick the children vertically to the start center or end of the row
                 </p>
                 <br/>
                 <div class="code-block-wrapper cbw-3">
@@ -64,7 +64,7 @@
                     <div class="code-block cb-3">
                         <pre>
                     <code class="language-kotlin">
-    Column(verticalArrangement = Arrangement.Top) {
+    Row(verticalAlignment = Alignment.Top) {
         Text(...)
         Text(...)
     }</code>
@@ -73,7 +73,7 @@
                     <div class="code-block cb-3">
                         <pre>
                     <code class="language-kotlin">
-    Column(verticalArrangement = Arrangement.Center) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Text(...)
         Text(...)
     }</code>
@@ -82,7 +82,7 @@
                     <div class="code-block cb-3">
                         <pre>
                     <code class="language-kotlin">
-    Column(verticalArrangement = Arrangement.Bottom) {
+    Row(verticalAlignment = Alignment.Bottom) {
         Text(...)
         Text(...)
     }</code>
@@ -90,23 +90,62 @@
                     </div>
                 </div>
                 <br/>
-                <img src="../assets/vert-align-top-center-bottom.png" >
-                <!-- <br/> -->
+                <img src="../assets/compose-rows/vert-top-center-bottom.png" >
+                <h2 class="post-h2">Horizontal arrangement</h2>
+                <h2 class="post-h2">Start, Center, End</h2>
+                <p class="post-paragraph">
+                    Again these values are pretty self-explanatory. They will stick the children horizontally to the start, center or end of the row
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-3">
+                    <div class="cb-header">Start</div>
+                    <div class="cb-header">Center</div>
+                    <div class="cb-header">End</div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    Row(horizontalArrangement = Arrangement.Start) {
+        Text(...)
+        Text(...)
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    Row(horizontalArrangement = Arrangement.Center) {
+        Text(...)
+        Text(...)
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    Row(horizontalArrangement = Arrangement.End) {
+        Text(...)
+        Text(...)
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <img src="../assets/compose-rows/hor-start-center-end.png" >
                 <h2 class="post-h2">Space between</h2>
                 <p class="post-paragraph">
-                    Space between will evenly distribute the children throughout the column without adding any additional spacing before
+                    Space between will evenly distribute the children throughout the row without adding any additional spacing before
                     the first of after the last child
                 </p>
                 <br/>
                 <pre>
                     <code class="language-kotlin">
-    Column(verticalArrangement = Arrangement.SpaceBetween) {
+    Row(horizontalArrangement = Arrangement.SpaceBetween) {
         Text(...)
         Text(...)
     }</code>
                 </pre>
                 <br/>
-                <img src="../assets/vert-align-space-between.png" >
+                <img src="../assets/compose-rows/hor-space-between.png" >
                 <br/>
                 <h2 class="post-h3">Space around</h2>
                 <p class="post-paragraph">
@@ -117,13 +156,13 @@
                 <br/>
                 <pre>
                     <code class="language-kotlin">
-    Column(verticalArrangement = Arrangement.SpaceAround) {
+    Row(horizontalArrangement = Arrangement.SpaceAround) {
         Text(...)
         Text(...)
     }</code>
                 </pre>
                 <br/>
-                <img src="../assets/vert-align-space-around.png" >
+                <img src="../assets/compose-rows/hor-space-around.png" >
                 <br/>
                 <h2 class="post-h3">Space evenly</h2>
                 <p class="post-paragraph">
@@ -134,62 +173,22 @@
                 <br/>
                 <pre>
                     <code class="language-kotlin">
-    Column(verticalArrangement = Arrangement.SpaceEvenly) {
+    Row(horizontalArrangement = Arrangement.SpaceEvenly) {
         Text(...)
         Text(...)
     }</code>
                 </pre>
                 <br/>
-                <img src="../assets/vert-align-space-evenly.png" >
+                <img src="../assets/compose-rows/hor-space-evenly.png" >
                 <br/>
-                <h2 class="post-h2">Horizontal alignment</h2>
-                <h2 class="post-h2">Top, Center, Bottom</h2>
+                <h2 class="post-h2">RowScope</h2>
                 <p class="post-paragraph">
-                    Again these values are pretty self-explanatory. They will stick the children horizontally to the start, center or end of the column
-                </p>
-                <br/>
-                <div class="code-block-wrapper cbw-3">
-                    <div class="cb-header">Start</div>
-                    <div class="cb-header">Center</div>
-                    <div class="cb-header">End</div>
-                    <div class="code-block cb-3">
-                        <pre>
-                    <code class="language-kotlin">
-    Column(horizontalAlignment = Alignment.Start) {
-        Text(...)
-        Text(...)
-    }</code>
-                                        </pre>
-                    </div>
-                    <div class="code-block cb-3">
-                        <pre>
-                    <code class="language-kotlin">
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(...)
-        Text(...)
-    }</code>
-                                        </pre>
-                    </div>
-                    <div class="code-block cb-3">
-                        <pre>
-                    <code class="language-kotlin">
-    Column(horizontalAlignment = Alignment.End) {
-        Text(...)
-        Text(...)
-    }</code>
-                                        </pre>
-                    </div>
-                </div>
-                <br/>
-                <img src="../assets/horizontal-align-start-center-end.png" >
-                <h2 class="post-h2">ColumnScope</h2>
-                <p class="post-paragraph">
-                    Any composable created within our Column has access to its ColumnScope. This gives access to some useful modifiers that the children can make use of.
+                    Any composable created within our Row has access to its RowScope. This gives access to some useful modifiers that the children can make use of.
                 </p>
                 <br/>
                 <h2 class="post-h2">Align</h2>
                 <p class="post-paragraph">
-                    The align modifier takes in an Alignment as seen above in the Horizontal examples. If a child has this set through a modifier it <em>overrides</em> any that 
+                    The align modifier takes in an Alignment as seen above in the vertical examples. If a child has this set through a modifier it <em>overrides</em> any that 
                     is set on the parent. Allowing for a staggered set of views for example.
                 </p>
                 <div class="code-block-wrapper cbw-2">
@@ -198,8 +197,8 @@
                     <div class="code-block cb-2">
                         <pre>
                     <code class="language-kotlin">
-    Column(verticalArrangement = Arrangement.SpaceEvenly) {
-        Text(modifier = Modifier.align(Alignment.CenterHorizontally))
+    Row(...) {
+        Text(modifier = Modifier.align(Alignment.CenterVertically))
         Text(...)
     }</code>
                                         </pre>
@@ -207,12 +206,12 @@
                     <div class="code-block cb-2">
                         <pre>
                             <code class="language-kotlin">
-    fun Modifier.align(alignment: Alignment.Horizontal): Modifier</code>
+    fun Modifier.align(alignment: Alignment.Vertical): Modifier</code>
                         </pre>
                     </div>
                 </div>
                 <br/>
-                <img src="../assets/vert-align-space-evenly-horizontal-child.png" >
+                <img src="../assets/compose-rows/ver-align-mid.png" >
                 <h2 class="post-h2">Weight</h2>
                 <p class="post-paragraph">
                     The weight modifier works much the same way as it does in HTML. It allows you to say that certain composables should take up greater portions of the screen 
@@ -229,13 +228,13 @@
                     as 1/3 but the remaining space can't be taken by our other views.
                 </p>
                 <div class="code-block-wrapper cbw-2">
-                    <div class="cb-header">Weight 2 / 1 / 1</div>
-                    <div class="cb-header">Weight 2 (no-fill) / 1 / 1</div>
+                    <div class="cb-header">Weight 1 / 1 / 1</div>
+                    <div class="cb-header">Weight 1 / 2 / 1</div>
                     <div class="code-block cb-2">
                         <pre>
                     <code class="language-kotlin">
-    Column(...) {
-        Text(modifier = Modifier.weight(2f))
+    Row(...) {
+        Text(modifier = Modifier.weight(1f))
         Text(modifier = Modifier.weight(1f))
         Text(modifier = Modifier.weight(1f))
     }</code>
@@ -244,16 +243,17 @@
                     <div class="code-block cb-2">
                         <pre>
                             <code class="language-kotlin">
-    Column(...) {
-        Text(modifier = Modifier.weight(2f,fill = false))
-        Text(modifier = Modifier.weight(1f))
+    Row(...) {
+        Text(modifier = Modifier.weight(1f)
+        Text(modifier = Modifier.weight(2f))
         Text(modifier = Modifier.weight(1f))
     }</code>
                         </pre>
                     </div>
                 </div>
                 <br/>
-                <img src="../assets/weight-fill-nofill.png" >
+                <img src="../assets/compose-rows/hor-weight-even.png" >
+                <img src="../assets/compose-rows/hor-weight-odd.png" >
             </article>
         </div>
         <aside class="aside">
