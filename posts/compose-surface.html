@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Page description">
+    <meta property="og:title" content="Jetpack Compose: Surface - Hoinzey.dev">
+    <meta property="og:description" content="Post on android jetpack compose surfaces">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/compose-surface.html">
+
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Jetpack Compose: Surface
+    </title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Jetpack Compose: Surface</h1>
+            <p class="post-date">20<sup>th</sup> April 2022</p>
+            <article class="post-article">
+                <p class="post-paragraph">
+                    A surface is a fundamental component of the material design theme. The world we interact with
+                    is not 2-dimensional, objects have elevation and cast shadows. Surfaces allow us to represent
+                    some of those characteristics with the use of light and shadows.
+                </p>
+                <br />
+                <p class="post-paragraph">
+                    This site is not concerned with delving into the depths of a topic it covers
+                    so I would suggest you read
+                    <a target="_blank"
+                        href="https://material.io/design/environment/surfaces.html#material-environment">the material
+                        guidelines</a>
+                    for a greater understanding.
+                </p>
+                <br />
+                <pre>
+                    <code class="language-kotlin">
+    @Composable
+    fun Surface(
+        modifier: Modifier = Modifier,
+        shape: Shape = RectangleShape,
+        color: Color = MaterialTheme.colors.surface,
+        contentColor: Color = contentColorFor(color),
+        border: BorderStroke? = null,
+        elevation: Dp = 0.dp,
+        content: @Composable () -> Unit)</code>
+                </pre>
+                <br />
+                <br />
+                <h2 class="post-h2">Shape</h2>
+                <p class="post-paragraph">
+                    This lets you set the shape of your surface. Obviously. There are a few ones you can choose to use
+                    with the default being a rectangle but
+                    you are able to make custom shapes but I won't be making anything crazy here.
+                </p>
+                <br />
+                <div class="code-block-wrapper cbw-3">
+                    <div class="cb-header">RoundedCorner</div>
+                    <div class="cb-header">CircleShape</div>
+                    <div class="cb-header">RoundedCorner again</div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    Surface(shape = RoundedCornerShape(12.dp)){
+        Text(...)
+    </code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    Surface(shape = CircleShape){
+        Text(...)
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                    <code class="language-kotlin">
+    Surface(shape = RoundedCornerShape(25.dp, 25.dp, 0.dp, 0.dp)){
+        Text(...)
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br />
+                <img src="../assets/compose-surface/shapes.png">
+                <h2 class="post-h2">Elevation</h2>
+                <p class="post-paragraph">
+                    Elevation determines how much shadow is drawn below the surface but doesn't actually change its
+                    z-index. This can be used to
+                    bring emphasis to a particular UI component and give it a raised effect.
+                </p>
+                <br />
+                <pre>
+                    <code class="language-kotlin">
+    Surface(shape = RoundedCornerShape(12.dp)){
+        Text(...)
+    }
+
+    Surface(
+        modifier = Modifier.padding(start = 4.dp),
+        shape = RoundedCornerShape(12.dp),
+        elevation = 12.dp){
+        Text(...)
+    }
+
+    Surface(Modifier.padding(start = 4.dp), shape = RoundedCornerShape(12.dp)){
+        Text(...)
+    }</code>
+                </pre>
+                <br />
+                <br />
+                <img src="../assets/compose-surface/elevation.png">
+                <h2 class="post-h2">Border</h2>
+                <p class="post-paragraph">
+                    Does it exactly what it says on the tin. A border.
+                </p>
+                <br />
+                <pre>
+                    <code class="language-kotlin">
+    Surface(
+        color = MaterialTheme.colors.surface,
+        border = BorderStroke(1.dp, OrangeHighlight), //Well, its a border
+    ) {
+        Text(...)
+    }</code>
+                </pre>
+                <br />
+                <img src="../assets/compose-surface/border.png">
+                <br />
+                <h2 class="post-h2">Experimental versions</h2>
+                <p class="post-paragraph">
+                    There are further features available to a surface but some of which are currently marked
+                    experimental.
+                    If / When they are marked stable and are useful enough I may cover them in more detail.
+                </p>
+                <br />
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>

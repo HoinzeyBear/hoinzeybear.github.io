@@ -164,12 +164,10 @@ aside {
     .container {width: 100%;}
     .content, .post, .post-paragraph { 
         order: 2; 
-        flex: 2; 
-        width: 85%; }
+        flex: 2; }
     .footer { order: 4; }
     .post {max-width: 1000px;margin:0 auto;}
-    /* pre{width: fit-content;} */
-    /* pre code{padding-right: 150px;} */
+    .post-article {width: 85%;}
  }
 
 @media all and (min-width: 1024px) and (max-width: 1660px) {
@@ -177,10 +175,10 @@ aside {
     .container {width: 100%;}
     .content, .post, .post-paragraph { 
         order: 2; 
-        flex: 2; 
-        width: 70%; }
+        flex: 2; }
     .footer { order: 4; }
     .post {max-width: 1000px;}
+    .post-article {width: 70%;}
  }
 
 @media all and (min-width: 768px) and (max-width: 1024px) {
@@ -209,32 +207,3 @@ aside {
     .container > * {padding: 0px;}
     .footer { order: 4; }
  }
-
-
-
-
-/* @media all and (min-width: 600px) {
-    .aside { flex: 1; }
-  }
-  
-@media all and (min-width: 800px) {
-    .aside { order: 1; } 
-    .content, .post { order: 2; flex: 3; }
-    .footer { order: 4; }
-}
-
-@media only screen and (max-width: 768px) {
-    body { max-width: 740px;}
-    .aside { order: 1; } 
-    .content, .post, .post-paragraph, .container { order: 2; width: 740px}
-    .container {padding: 0px;}
-    .footer { order: 4; }
-}
-
-@media only screen and (max-width: 425px) {
-    body { max-width: 400px;}
-    .aside { order: 1; } 
-    .content, .post, .post-paragraph, .container { order: 2; width: 400px; }
-    .container > * {padding: 0px;}
-    .footer { order: 4; }
-} */
