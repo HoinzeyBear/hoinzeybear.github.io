@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Some dos and donts of using lists as state">
+    <meta property="og:title" content="Compose: Lists as state">
+    <meta property="og:description" content="Some dos and donts of using lists as state">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/compose-lists-as-state.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Compose: Lists as state
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Compose: Lists as state</h1>
+            <p class="post-date">17<sup>th</sup> May 2022</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    I've been following Compose tutorials, <a target="_blank" href="https://github.com/HoinzeyBear/SelfComposed">practicing</a> and using it 
+                    in work. There is a lot to cover which is why I poke around on awful looking pages trying to do the same thing 
+                    different ways to see if there is much difference.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    One thing I've stumbled upon is in how using different types of lists as state can give different results. In the 
+                    right scenario these could lead to more recompositions than you may have been expecting. 
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Our example will work of the code below. We'll have a button that adds to the list when clicked 
+                    called from another composable.
+                </p>
+                <pre>
+                    <code class="language-kotlin">
+    @Composable
+    fun ListButton(list: List&lt;String&gt;, add: () -> Unit) {
+        println("Drawing List button")
+        Button(...),
+            onClick = {
+                add()
+                println("Size of list is now: ${list.size}")
+            }) {}
+        }
+    }
+
+    @Composable
+    fun ListExample(...) {
+        println("Creating list")
+        val badList by remember{mutableStateOf(listOf("a"))}
+        var firstList by remember{mutableStateOf(listOf("a"))}
+        val secondList: SnapshotStateList&lt;String&gt; = remember{ mutableStateListOf("a")}
+        val thirdList: MutableList&lt;String&gt; = remember{mutableStateListOf("a")}
+    
+        Row(...) {
+            println("Drawing first DO list button")
+            ListButton(list = firstList){
+                firstList = firstList.plus("b")
+            }
+            //...and the other lists
+        }
+    }</code>
+                </pre>
+                <br/>
+                <h3 class="post-h3">The bad list</h3>
+                <pre>
+                    <code class="language-kotlin">
+    val badList by remember{mutableStateOf(listOf("a"))}
+    onClick = { list.plus("b") }</code>
+                </pre>
+                <br/>
+                <p class="post-paragraph">
+                    This looks nice. It won't work. While Kotlin offers the  <code class="emph">plus</code> method on an immutable 
+                    list, it returns a new copy of the former list with the additional element. So as our list itself isn't being changed 
+                    our composable has no reason to think it has to recompose.
+                </p>
+                <br/>
+                <h3 class="post-h3">The second and third lists</h3>
+                <pre>
+                    <code class="language-kotlin">
+    val secondList: SnapshotStateList<String> = remember{ mutableStateListOf("a") }
+    val thirdList: MutableList<String> = remember{mutableStateListOf("a")}
+    onClick = { lists.add("b") }//same applies to both</code>
+                </pre>
+                <br/>
+                <p class="post-paragraph">
+                    This also looks nice. The difference is it works lovely too. When this builds initially you'll get the following 
+                    log messages from above:
+                </p>
+                <ul>
+                    <li>Creating list...</li>
+                    <li>Drawing second list button...</li>
+                    <li>Drawing List button</li>
+                    <li>Drawing second list button...</li>
+                </ul>
+                <p class="post-paragraph">
+                    And when you click either of these buttons you'll only get the the update that <em>"Size of list is now: X.."</em>. 
+                    Thats perfect, thats exactly what we want. No extraneous recompositions. 
+                </p>
+                <br/>
+                <h3 class="post-h3">The first list</h3>
+                <pre>
+                    <code class="language-kotlin">
+    var firstList by remember{mutableStateOf(listOf("a"))}
+    onClick = { firstList = firstList.plus("b") }</code>
+                </pre>
+                <br/>
+                <p class="post-paragraph">
+                   Now this list looks an <em>awful</em> lot like our bad list? The difference is that in the onClick 
+                   lambda we are <em>reassigning</em> our list to the newly returned one. This change is observed and 
+                   triggers recomposition. Great.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    The problem, which you'll see if you run this, is that our logs show a little more happing than we had hoped.
+                    When the page is first built, we get the same log messages as the first set above, that is a given. When you click 
+                    the button and trigger the recomposition however you get:
+                 </p>
+                 <ul>
+                    <li>Creating list...</li>
+                    <li>Drawing first list button...</li>
+                    <li>Drawing List button</li>
+                    <li>Drawing second list button...</li>
+                    <li>Drawing List button</li>
+                    <li>Drawing second list button...</li>
+                    <li>Size of list is now: X..</li>
+                </ul>
+                <p class="post-paragraph">
+                    Now when this button is used, we aren't only recomposing the button we pressed. We are also recomposing the other
+                    2 buttons if present, and even recomposing the parent method altogether ? Because our first list is immutable, whenever
+                    we change that we need to recompose all the scopes that are reading that state. In that case that goes all the way to the 
+                    start of our calling method.
+                 </p>
+                 <br/>
+                <p class="post-paragraph">
+                    Lists 2 and 3 are the more <em>"correct"</em> way to use a list as state as they leverage the compose APIs better and 
+                    can better inform where the recompositions need to take place.
+                 </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>

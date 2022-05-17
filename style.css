@@ -48,7 +48,7 @@ div.content{
 } */
 
 h2.post-title a{
-    font-size: 2rem;
+    font-size: 1.3rem;
     text-decoration: none;
     color: #0f1310;
 }
@@ -62,7 +62,7 @@ article p{
 }
 
 p.post-preview{
-    font-size: 1.3em;
+    font-size: 0.9em;
     line-height: 1.5em;
 }
 
@@ -77,7 +77,7 @@ p.post-date{
 }
 
 .post-paragraph, li {
-    font-size: 1.3em;
+    font-size: 1.0em;
     line-height: 1.6em;
 }
 
@@ -106,7 +106,7 @@ aside{
 }
 
 aside {
-    font-size: 1.1em;
+    font-size: 0.9em;
     line-height: 1.5em;
 }
 
