@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A brief chat about memento pattern">
+    <meta property="og:title" content="Design patterns: Memento - hoinzey.dev">
+    <meta property="og:description" content="A brief chat about memento pattern">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/design-pattern-memento.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Design patterns: Memento
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Design patterns: Memento</h1>
+            <p class="post-date">24<sup>th</sup> May 2022</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Ever make a bad decision in a game and load up a save ? Or fill in one of those forms that has 12 
+                    steps but if you muck up you can go back a few steps and everything previously filled in is still there ? Chances are
+                    you've encountered the memento pattern.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    It is essentially an "Undo" button. It allows you to load a previous example of state. It consists of 3 main actors:
+                    the originator, the memento and the caretaker.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    This can (probably) be found <a target="_blank" href="https://github.com/HoinzeyBear/learning/tree/master/app/src/main/java/com/example/learning/designpatterns">here</a>
+                </p>
+                <br/>
+                <h2>The originator</h2>
+                <p class="post-paragraph">
+                    The originator is essentially our state object. It can create a snapshot or memento of its own state and can restore 
+                    its state when given a memento. In our example, that will be a class which represents a Textview. 
+                </p>
+                <br/>
+                <pre>
+                    <code class="language-java">
+    public class MementoTextView {
+
+        private String text;
+
+        public MementoTextView(String text) {
+            this.text = text;
+        }
+
+        public Memento takeSnapshot() {
+            return new Memento(this.text);
+        }
+
+        public void restore(Memento memento) {
+            this.text = memento.text;
+        }
+
+        public static class Memento {
+            ...
+        }
+    }</code>
+                </pre>
+                <br/>
+                <p class="post-paragraph">
+                    The <code class="emph">takeSnapshot</code> method allows us to create a snapshot of the state. The <code class="emph">restore</code> 
+                    method can be used to restore state from a previous snapshot.
+                </p>
+                <h2>The memento</h2>
+                <p class="post-paragraph">
+                    This represents a snapshot of your state. Therefore the fields described in this will often be a mirror of what is in your originator.
+                    You don't want to expose anything in this to your caretaker. That is why I have made it within my originator class.
+                </p>
+                <br/>
+                <pre>
+                    <code class="language-java">
+    public static class Memento {
+        private final String text;
+
+        private Memento(String text) {
+            this.text = text;
+        }
+    }</code>
+                </pre>
+                <h2>The caretaker</h2>
+                <p class="post-paragraph">
+                    The caretaker is responsible of creating snapshots and storing them to be used to restore state if needed. In this example I am 
+                    using the Activity of an Android application as the caretaker. 
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    It contains a list of the mementos and when a button is pressed it will 
+                    use the memento to restore a TextView to an earlier state.
+                </p>
+                <br/>
+                <pre>
+                    <code class="language-kotlin">
+    class MementoActivity : AppCompatActivity() {
+
+        private val mementos = mutableListOf&lt;MementoTextView.Memento&gt;()
+
+        private fun saveMemento() {
+            et_memento?.let {
+                val mementoTextView = MementoTextView(it.text.toString())
+                mementos.add(mementoTextView.takeSnapshot())
+                currentTextView = mementoTextView
+            }
+        }
+
+        private fun undoChanges() {
+            et_memento?.apply {
+                val lastSave = mementos.last()
+                currentTextView?.restore(lastSave)
+                setText(currentTextView?.text)
+                mementos.remove(lastSave)
+            }
+        }
+    }</code>
+                </pre>
+                <br/>
+                <p class="post-paragraph">
+                    Again, this can (probably) be found <a target="_blank" href="https://github.com/HoinzeyBear/learning/tree/master/app/src/main/java/com/example/learning/designpatterns">here</a>
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
