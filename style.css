@@ -8,13 +8,17 @@ header{
     font-weight: bold;
 }
 
-header h1, .post-h1{
+header h1 {
     font-size: 4rem;
+}
+
+header h1, .post-h1{
+    /* font-size: 4rem; */
     margin: 10px 0 10px 0;
 }
 
 header h2{
-    font-size: 1.2em;
+    /* font-size: 1.2em; */
 }
 
 header {
@@ -39,8 +43,6 @@ footer{
 
 div.content{
     order: 2;
-    border-left: 2px solid;
-    border-left-color: #dee7e1;
 }
 
 /* div.content, aside, div.post{
@@ -48,7 +50,7 @@ div.content{
 } */
 
 h2.post-title a{
-    font-size: 1.3rem;
+    /* font-size: 1.3rem; */
     text-decoration: none;
     color: #0f1310;
 }
@@ -62,7 +64,7 @@ article p{
 }
 
 p.post-preview{
-    font-size: 0.9em;
+    /* font-size: 0.9em; */
     line-height: 1.5em;
 }
 
@@ -72,7 +74,7 @@ p.post-date{
 }
 
 .post-h1{
-    font-size: 3rem;
+    /* font-size: 3rem; */
     margin: 10px 0 10px 0;
 }
 
@@ -88,13 +90,13 @@ p.post-date{
 pre, code.emph {
     padding: 0 !important;
     margin: 0 !important;
-    font-size: 1.4em;
+    /* font-size: 1.4em; */
     background-color:#c7c7c7 ;
 }
 
 code {
     font-family: monospace;
-    font-size: 1.1em;
+    /* font-size: 1.1em; */
 }
 
 figure {
@@ -133,7 +135,7 @@ aside {
     /* background-color: #dee7e1; */
     background-color: #afb5b1f5;
     color: rgb(45 45 45);
-    font-size: 1.5em;
+    /* font-size: 1.5em; */
     text-align: center;
     padding: 10px;
 }
@@ -167,6 +169,7 @@ aside {
         flex: 2; }
     .footer { order: 4; }
     .post {max-width: 1000px;margin:0 auto;}
+    .content {max-width: 1000px;margin:0 auto;}
     .post-article {width: 85%;}
  }
 
