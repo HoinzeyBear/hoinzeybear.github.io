@@ -30,3 +30,28 @@ for(var i=0; i < codeBlockWrappers.length; i++){
         headers[t].addEventListener("click", onClick(t, headers, blocks))
     }
 }
+
+function copyFunction(node) {
+    return function(){
+        console.log("Clicked ")
+        var r = document.createRange();
+        r.selectNode(node);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(r);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+    }
+  }
+
+  console.log("Looking for code copy buttons")
+  var codeCopyButtons = document.getElementsByClassName("copy-icon")
+  console.log("Found " + codeCopyButtons.length + " buttons")
+  for(var i=0; i < codeCopyButtons.length; i++){
+    var copyButton = codeCopyButtons[i]
+    // var nearestCodeBlock = copyButton.querySelectorAll("code")
+    var nearestCodeBlock = copyButton.nextElementSibling
+    console.log("Found " + nearestCodeBlock)
+    copyButton.addEventListener('click', copyFunction(nearestCodeBlock));
+  }
+  
+//   document.getElementByClass('copy-icon').addEventListener('click', copyFunction);
