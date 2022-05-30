@@ -161,6 +161,17 @@ aside {
     grid-area: 2 / 1 / 3 / 5;
 }
 
+img.copy-icon {
+    float: right;
+    margin-right: 20px;
+    margin-top: 10px;
+    display: none;
+}
+
+pre:hover img{
+    display: block;
+}
+
 @media all and (min-width: 1660px) {
     .aside { flex: 1; max-width: 220px; padding-left: 100px; } 
     .container {width: 100%;}
