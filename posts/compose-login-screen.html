@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="How to do a login screen in compose">
+    <meta property="og:title" content="Jetpack Compose: Login Screen - Hoinzey.dev">
+    <meta property="og:description" content="Post on android jetpack compose login screen">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/compose-login-screen.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Jetpack Compose: Login Screen
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Jetpack Compose: Login Screen</h1>
+            <p class="post-date">10<sup>th</sup> April 2022</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    This post is going to go through making a simple login screen focusing mainly on a few key features. Not all of the code will be 
+                    put in here as it would be too much.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    You can however find all of the code <a href="https://github.com/HoinzeyBear/SelfComposed/tree/main/app/src/main/java/com/example/selfcomposed/imitations" target="_blank">here</a>
+                </p>
+                <br/>
+                <h2 class="post-h2">Toggling password visibility</h2>
+                <p class="post-paragraph">
+                    You've seen it everywhere. An icon or piece of clickable text that will turn your "*************" into a visible password.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    This is achieved through the use of something clickable and a <code class="emph">VisualTransormation</code> which you can see more of
+                    <a href="https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/VisualTransformation" target="_blank">here</a>.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Declare a boolean piece of state to represent if the password is hidden or not. This will determine which icon is displayed. It also 
+                    changes the <code class="emph">VisualTransformation</code> from <em>None</em>  to type <em>Password</em> which is probably the only time you might use VisualTransformation ever.
+                </p>
+                <pre>
+                <img src="../assets/copy-icon.png" class="copy-icon">
+                <code class="language-kotlin">
+    @Composable
+    fun PasswordInput(...) {
+    
+        var isPasswordHidden by remember {
+            mutableStateOf(true)
+        }
+    
+        TextField(... 
+            trailingIcon = {
+                IconButton(onClick = {
+                    isPasswordHidden = !isPasswordHidden
+                }) {
+                    if(isPasswordHidden) {
+                        Icon("Show password")
+                    } else {
+                        Icon("Show password")
+                    }
+                }
+            },
+        visualTransformation = if(isPasswordHidden) {
+            PasswordVisualTransformation()
+        } else VisualTransformation.None)
+    }}</code>
+                </pre>    
+                <br/>
+                <img src="../assets/password_visiblity_comparison.png" >
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
