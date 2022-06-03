@@ -29,7 +29,7 @@
         </header>
         <div class="post">
             <h1 class="post-h1">Jetpack Compose: Login Screen</h1>
-            <p class="post-date">10<sup>th</sup> April 2022</p>
+            <p class="post-date">3<sup>rd</sup> June 2022</p>
             <article class = "post-article">
                 <p class="post-paragraph">
                     This post is going to go through making a simple login screen focusing mainly on a few key features. Not all of the code will be 
@@ -83,6 +83,126 @@
                 </pre>    
                 <br/>
                 <img src="../assets/password_visiblity_comparison.png" >
+                <br/>
+                <h2 class="post-h2">Password requirements</h2>
+                <p class="post-paragraph">
+                    Many sites when you go to create an account either require that the password meet certain requirements or
+                    they might indicate a "Stength" indicator which is basically the same thing it just doesn't explicitly say what is strong.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Here we are going to have 3 mandatory password requirements: 8 characters long, a number and a capital letter.
+                </p>
+                <img src="../assets/password_checks_failed.png" >
+                <img src="../assets/password_checks_passed.png" >
+                <h3 class="post-h3">What we need...</h3>
+                <p class="post-paragraph">
+                    To make this work we need a few things in the code:
+                </p>
+                <ul>
+                    <li>To define the requirements</li>
+                    <li>To store those requirements in our state</li>
+                    <li>To update the stored requirements as we achieve them</li>
+                </ul>
+                <div class="code-block-wrapper cbw-3">
+                    <div class="cb-header">The requirements</div>
+                    <div class="cb-header">Updated state</div>
+                    <div class="cb-header">Updating the state</div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    enum class PasswordRequirements(@StringRes val label: Int){
+        CAPITAL_LETTER(..),
+        NUMBER(..),
+        EIGHT_CHARACTERS(..)
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    data class PasswordFieldState(
+        val password: String? = null,
+        val passwordRequirements: List&lt;PasswordRequirements&gt; = emptyList())</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    private fun updatePassword(password: String) {
+        val requirements = mutableListOf&lt;PasswordRequirements&gt;()
+        if (password.length &gt; 7) {
+            requirements.add(PasswordRequirements.EIGHT_CHARACTERS)
+        }
+        if (password.any { it.isUpperCase() }) {
+            requirements.add(PasswordRequirements.CAPITAL_LETTER)
+        }
+        if (password.any { it.isDigit() }) {
+            requirements.add(PasswordRequirements.NUMBER)
+        }
+
+        uiState.value = uiState.value.copy(
+            password = password,
+            passwordRequirements = requirements.toList())
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    With all that in place, all that is left is to handle that in our Composable and update the 
+                    text color as necessary.
+                </p>
+                <br/>
+                <pre>
+                    <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    @Composable
+    fun PasswordRequirements(..
+        satisfiedRequirements: List&lt;PasswordRequirements&gt;) {
+
+        Column(..) {
+            PasswordRequirements.values().forEach { req ->
+                RequirementEntry(..
+                    satisfied = satisfiedRequirements.contains(req))
+            }
+        }
+    }
+
+
+    @Composable
+    fun RequirementEntry(..
+        satisfied: Boolean) {
+
+        val tint = if(satisfied) {
+            BrightGreen
+        } else
+            MaterialTheme.colors.error
+
+        Row(..) {
+            Icon(..
+                imageVector = Icons.Default.Check,
+                tint = tint
+            )
+
+            Text(..
+                text = label,
+                color = tint
+            )
+        }
+    }</code>
+                    </pre>
+                    <br/>
+                    <p class="post-paragraph">
+                        Again, you can  find all of the code <a href="https://github.com/HoinzeyBear/SelfComposed/tree/main/app/src/main/java/com/example/selfcomposed/imitations" target="_blank">here</a>
+                    </p>
+                    <br/>
+                    <p class="post-paragraph">
+                        The <a href="https://composeacademy.gumroad.com/" target="_blank">following</a> course gave me a great primer into Compose. Look up Joe's twitter too.
+                    </p>
             </article>
         </div>
         <aside class="aside">
