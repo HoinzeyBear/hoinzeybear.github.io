@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Looking at Jetpack Composes focus manager">
+    <meta property="og:title" content="Jetpack Compose: Focus manager - Hoinzey.dev">
+    <meta property="og:description" content="Jetpack Compose: Focus manager">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Jetpack Compose: Focus manager
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Jetpack Compose: Focus manager</h1>
+            <p class="post-date">9<sup>th</sup> June 2022</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Focus manager allows us to focus/traverse input fields in a linear or non-linear way when pressing the "next" 
+                    button on the device's keyboard.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                   Jamie Sanson wrote a good post on it <a target="_blank" href="https://medium.com/google-developer-experts/focus-in-jetpack-compose-6584252257fe">here</a> which covers 
+                   some additional features. I found that late into writing my example code and was too lazy to modify what I'd planned to write.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                   You can find my full example code <a href="https://github.com/HoinzeyBear/SelfComposed/blob/main/app/src/main/java/com/example/selfcomposed/blog/FocusRequesterP1.kt">here</a>.
+                </p>
+                <h3 class="post-h3">Focus modifiers</h3>
+                <p class="post-paragraph">
+                   You can define a custom focus requester as seen below with <code class="emph">secondNameFocusRequester</code>. The focus requester 
+                   is passed in the modifier to the field which will be focused - in this case the field for second name. Then in the keyboard actions of 
+                   the TextField we trigger the call when the user presses the next button.
+                </p>
+                <br/>
+                <pre>
+                    <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    @Composable
+    fun FormContent(modifier: Modifier) {
+        val secondNameFocusRequester = remember { FocusRequester() }
+
+        //First name
+        FormTextField(..
+            onNextClicked = {secondNameFocusRequester.requestFocus()})
+
+        //Second name
+        FormTextField(..
+            modifier = Modifier.focusRequester(secondNameFocusRequester))
+    }
+                        
+                        
+    @Composable
+    fun FormTextField(
+        modifier: Modifier
+        onNextClicked: () -&gt; Unit) {
+        TextField(..
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = {onNextClicked()})
+        )
+    }</code>
+                </pre>
+                <h3 class="post-h3">Focus manager</h3>
+                <p class="post-paragraph">
+                   Alternatively you can get a reference of the current focus manager and make use of the methods on that. In the below examples 
+                   you can see it used to move <code class="emph">Down</code> to the next item in the list, and also <code class="emph">clearFocus</code>
+                   which is going to hide the keyboard for us. Useful to help bring a form button into view for example.
+                </p>
+                <br/>
+                <pre>
+                    <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    @Composable
+    fun FormContent(modifier: Modifier) {
+        val focusManager = LocalFocusManager.current
+
+        //Address 1
+        FormTextField(
+            modifier = Modifier.focusRequester(address1FocusRequester),
+            value = "",
+            label = "Address 1",
+            onNextClicked = {focusManager.moveFocus(FocusDirection.Down)})
+
+            //Address 2
+        FormTextField(
+            modifier = Modifier.focusRequester(address2FocusRequester),
+            value = "",
+            label = "Address 2",
+            onNextClicked = {focusManager.clearFocus()})
+    }</code>
+                </pre>
+                <h3 class="post-h3">Focus on entry to screen</h3>
+                <p class="post-paragraph">
+                   To focus on a field when you enter the screen, you can use a focus modifier along with a <code class="emph">LaunchedEffect</code> 
+                   to bring attention to the first form field straight away.
+                </p>
+                <br/>
+                <pre>
+                    <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    @Composable
+    fun FormContent(modifier: Modifier) {
+
+        val firstNameFocusRequester = remember { FocusRequester() }
+
+        val focusManager = LocalFocusManager.current
+
+        //First name
+        FormTextField(
+            modifier = Modifier.focusRequester(firstNameFocusRequester),
+            ..)
+
+        LaunchedEffect(Unit) {
+            firstNameFocusRequester.requestFocus()
+        }
+    }</code>
+                </pre>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
