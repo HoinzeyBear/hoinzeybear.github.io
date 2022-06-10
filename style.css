@@ -6,6 +6,7 @@ body{
 header{
     text-align: center;
     font-weight: bold;
+    width: 100%;
 }
 
 header h1 {
@@ -13,12 +14,7 @@ header h1 {
 }
 
 header h1, .post-h1{
-    /* font-size: 4rem; */
     margin: 10px 0 10px 0;
-}
-
-header h2{
-    /* font-size: 1.2em; */
 }
 
 header {
@@ -32,25 +28,20 @@ footer{
 
 .container{
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
 }
 
-.container > * {
+/* .container > * {
     padding: 10px;
-    flex: 1 100%;
-}
+} */
 
 div.content{
     order: 2;
+    width: 50%;
+    margin-right: auto;
 }
 
-/* div.content, aside, div.post{
-    background-color: #FFFFFF;
-} */
-
 h2.post-title a{
-    /* font-size: 1.3rem; */
     text-decoration: none;
     color: #0f1310;
 }
@@ -64,7 +55,6 @@ article p{
 }
 
 p.post-preview{
-    /* font-size: 0.9em; */
     line-height: 1.5em;
 }
 
@@ -74,7 +64,6 @@ p.post-date{
 }
 
 .post-h1{
-    /* font-size: 3rem; */
     margin: 10px 0 10px 0;
 }
 
@@ -96,7 +85,6 @@ pre, code.emph {
 
 code {
     font-family: monospace;
-    /* font-size: 1.1em; */
 }
 
 figure {
@@ -104,7 +92,10 @@ figure {
 }
 
 aside{
+    width: 10%;
     order: 1;
+    margin-left: auto;
+    padding: 15px;
 }
 
 aside {
@@ -132,17 +123,14 @@ aside {
     grid-template-columns: repeat(4, 1fr);
 }
 .cb-header {
-    /* background-color: #dee7e1; */
     background-color: #afb5b1f5;
     color: rgb(45 45 45);
-    /* font-size: 1.5em; */
     text-align: center;
     padding: 10px;
 }
 
 .cb-header.selected {
     background-color: rgb(45 45 45);
-    /* color: #dee7e1; */
     color: #dee7e1;
 }
 .code-block {
@@ -172,7 +160,20 @@ pre:hover img{
     display: block;
 }
 
-@media all and (min-width: 1660px) {
+    /* .aside { flex: 1; max-width: 220px; }  */
+    /* .container {width: 100%;} */
+    .post, .post-paragraph {
+        order: 2; 
+        flex: 2; 
+        width: 60%;}
+    .footer { order: 4; }
+    .post {
+        max-width: 1000px;
+        margin-right: auto;
+    }
+    .post-article {}
+
+/* @media all and (min-width: 1660px) {
     .aside { flex: 1; max-width: 220px; padding-left: 100px; } 
     .container {width: 100%;}
     .content, .post, .post-paragraph { 
@@ -187,7 +188,7 @@ pre:hover img{
 @media all and (min-width: 1024px) and (max-width: 1660px) {
     .aside { flex: 1; max-width: 220px; } 
     .container {width: 100%;}
-    .content, .post, .post-paragraph { 
+    .content, .post, .post-paragraph {
         order: 2; 
         flex: 2; }
     .footer { order: 4; }
@@ -220,4 +221,28 @@ pre:hover img{
     }
     .container > * {padding: 0px;}
     .footer { order: 4; }
+ } */
+
+ @media all and (max-width: 900px) {
+    .container {
+        padding: 5px;
+        display: block;
+    }
+
+    div.content {
+        order: 2;
+    }
+
+    aside{
+        order: 1;
+        padding: 0px;
+    }
+
+    div.content, aside{
+        width: 100%;
+    }
+
+    .post, .post-paragraph {
+        width: 100%;}
+
  }
