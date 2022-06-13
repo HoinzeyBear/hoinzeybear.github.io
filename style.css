@@ -68,7 +68,7 @@ p.post-date{
 }
 
 .post-paragraph, li {
-    font-size: 1.0em;
+    font-size: 1.2em;
     line-height: 1.6em;
 }
 
@@ -164,8 +164,7 @@ pre:hover img{
     /* .container {width: 100%;} */
     .post, .post-paragraph {
         order: 2; 
-        flex: 2; 
-        width: 60%;}
+        flex: 2; }
     .footer { order: 4; }
     .post {
         max-width: 1000px;
