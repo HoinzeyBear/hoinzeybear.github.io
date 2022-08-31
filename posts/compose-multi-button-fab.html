@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Guide on implementing a fab which displays multiple buttons">
+    <meta property="og:title" content="Jetpack Compose: Multi-Button Fab - Hoinzey.dev">
+    <meta property="og:description" content="Guide on implementing a fab which displays multiple buttons">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/compose-multi-button-fab.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Jetpack Compose: Multi-Button Fab
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Jetpack Compose: Multi-Button Fab</h1>
+            <p class="post-date">2<sup>nd</sup> September 2022</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    Fab buttons are an extremely common piece of furniture within the household of any Android application these days.
+                    Ones which show multiple buttons at once are more common; think Twitter or MyFitnessPal.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    I'm making a little Twitter clone and the first part I am tackling is the mult-button Fab. The full code for that 
+                    can be found <a target="_blank" href="https://github.com/HoinzeyBear/SelfComposed/blob/main/app/src/main/java/com/example/selfcomposed/imitations/Twitter.kt" class="">here</a> 
+                    though I don't guarantee it will be as below.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Going to walk through making the below multi-button Fab in this post.
+                </p>
+                <br/>
+                <img src="../assets/compose-multi-button-fab/multi-button-fab-comparison.png">
+                <pre>
+                    <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+                    class CounterViewModel : ViewModel() {
+
+                        var count = 0
+                    
+                        fun getIncrementedCount(): Int{
+                            this.count ++
+                            return this.count
+                        }
+                    }
+                    </code>
+                </pre>
+                
+                <p class="post-paragraph">
+                    Aliquam eget velit vitae odio elementum porttitor sed nec diam. Fusce a lacus suscipit, feugiat mauris in,
+                     auctor augue. Quisque at metus erat. Nam placerat nisl vel ante efficitur efficitur. Suspendisse ornare turpis
+                      non consequat tempus. Proin nibh eros, aliquet quis dui nec, facilisis facilisis nisi. Donec eu faucibus metus.
+                      Donec hendrerit scelerisque tempor. Etiam eu aliquam nibh, eu posuere turpis. Class aptent taciti sociosqu 
+                      ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean dignissim orci mi, a ullamcorper quam 
+                      commodo eget. Quisque sagittis odio sit amet tincidunt ornare.
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <footer class="footer"></footer>
+    </div>
+</body>
