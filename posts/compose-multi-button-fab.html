@@ -47,28 +47,110 @@
                 </p>
                 <br/>
                 <img src="../assets/compose-multi-button-fab/multi-button-fab-comparison.png">
+                <br/>
+                <h3 class="post-h3">Planning the layout</h3>
+                <p class="post-paragraph">
+                    The first step is to plan out what elements this is going to be built of.
+                </p>
+                <br/>
+                <img src="../assets/compose-multi-button-fab/multi-button-blueprint.png">
+                <ul>
+                    <li>The red box is going to be a column, this will be our container</li>
+                    <li>The blue box is a row to house our text and icon side-by-side</li>
+                    <li>The purple and green box are for the text view and icon inside the above row</li>
+                    <li>Finally the black box is our FAB button</li>
+                </ul>
+                <p class="post-paragraph">
+                    The code below has been shortened for brevity. The full code can be found 
+                    <a target="_blank" href="https://github.com/HoinzeyBear/SelfComposed/blob/main/app/src/main/java/com/example/selfcomposed/imitations/Twitter.kt" class="">here</a> 
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Our container</div>
+                    <div class="cb-header">The sub buttons</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+    <code class="language-kotlin">@Composable
+    fun ActionButton(...) {
+        //Our red box
+        Column(modifier, horizontalAlignment = Alignment.End) {
+
+            if (transition.currentState == MultiFabState.EXPANDED) {
+                MultiFabItems.values().forEach {
+                    MiniFloatingActionButton(...)
+                    Spacer(...)
+                }
+            }
+            //Our black box
+            FloatingActionButton(
+                onClick = {
+                    onStateChanged(...)
+                }) {
+                Icon(...)
+            }
+        }
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+    <code class="language-kotlin">@Composable
+    private fun MiniFloatingActionButton(
+        item: MultiFabItems
+        onFabItemClicked: (item: MultiFabItems) -> Unit) {
+            //Our blue box
+            Row(...) {
+                //Our purple box
+                Text(...)
+                Spacer(...)
+                //Our green box
+                Surface(shape = CircleShape, ..) {
+                    IconButton(...) {
+                        Icon(...)
+                    }
+                }
+            }
+    }</code>
+                    </pre>
+                    </div>
+                </div>    
+                <h3 class="post-h3">Expanding our buttons</h3>
+                <p class="post-paragraph">
+                    Our FAB has 2 states. Collapsed or Expanded, it will be collapsed by default. We are going to hold this as a piece of state using 
+                    <code class="emph">var fabState by remember { mutableStateOf(MultiFabState.COLLAPSED) }</code>. I also use this to rotate my FAB button 
+                    when it is selected and to expand the sub-buttons.
+                </p>
+                <br/>
                 <pre>
                     <img src="../assets/copy-icon.png" class="copy-icon">
-                    <code class="language-kotlin">
-                    class CounterViewModel : ViewModel() {
+    <code class="language-kotlin">val transition = updateTransition(targetState = fabState, label = "fab_transitions")
+    val rotation: Float by transition.animateFloat(label = "fab_rotation") { s: MultiFabState ->
+        if (s == MultiFabState.EXPANDED) 45f else 0f
+    }
 
-                        var count = 0
-                    
-                        fun getIncrementedCount(): Int{
-                            this.count ++
-                            return this.count
-                        }
-                    }
-                    </code>
+    val scale: Float by transition.animateFloat { state ->
+        if (state == MultiFabState.EXPANDED) 56f else 0f
+    }
+
+    val alpha: Float by transition.animateFloat(transitionSpec = {
+        tween(durationMillis = 20)
+    }, label = "") { state ->
+        if (state == MultiFabState.EXPANDED) 1f else 0f
+    }
+
+    if (transition.currentState == MultiFabState.EXPANDED) {
+
+        MultiFabItems.values().forEach {
+            MiniFloatingActionButton(...)
+        }
+    }</code>
                 </pre>
-                
+                <br/>
                 <p class="post-paragraph">
-                    Aliquam eget velit vitae odio elementum porttitor sed nec diam. Fusce a lacus suscipit, feugiat mauris in,
-                     auctor augue. Quisque at metus erat. Nam placerat nisl vel ante efficitur efficitur. Suspendisse ornare turpis
-                      non consequat tempus. Proin nibh eros, aliquet quis dui nec, facilisis facilisis nisi. Donec eu faucibus metus.
-                      Donec hendrerit scelerisque tempor. Etiam eu aliquam nibh, eu posuere turpis. Class aptent taciti sociosqu 
-                      ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean dignissim orci mi, a ullamcorper quam 
-                      commodo eget. Quisque sagittis odio sit amet tincidunt ornare.
+                    For a more in depth guide there is a great one
+                    <a target="_blank" href="https://compose.academy/blog/building_a_multi-action_floating_action_button_in_jetpack_compose" class="">here</a> 
                 </p>
             </article>
         </div>
@@ -87,6 +169,6 @@
                 </ul>
             </section>
         </aside>
-        <footer class="footer"></footer>
     </div>
+    <footer class="footer"></footer>
 </body>

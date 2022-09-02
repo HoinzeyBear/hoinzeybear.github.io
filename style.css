@@ -23,7 +23,9 @@ header {
 }
 
 footer{
-    min-height: 50px;
+    margin-top: 15px;
+    min-height: 30px;
+    background-color: #dee7e1;
 }
 
 .container{
