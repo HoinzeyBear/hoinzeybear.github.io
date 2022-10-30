@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="How to make a tweet in Jetpack Compose">
+    <meta property="og:title" content="Jetpack Compose: Making a Tweet - Hoinzey.dev">
+    <meta property="og:description" content="How to make a tweet in Jetpack Compose">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.hoinzey.dev/posts/compose-tweet.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Jetpack Compose: Making a Tweet
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Jetpack Compose: Making a Tweet</h1>
+            <p class="post-date">30<sup>th</sup> October 2022</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    All the code for this can be found <a target="_blank" href="https://github.com/HoinzeyBear/SelfComposed/tree/main/app/src/main/java/com/example/selfcomposed/imitations/twitter" class="href">here</a>.
+                    Building on the <a target="_blank" href="https://hoinzey.dev/posts/compose-multi-button-fab.html" class="href">previous post</a> which added
+                    the floating action button in Twitter style, next I needed to copy the tweets themselves.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    The first step is to look at the design and work out the components that are going to make up a tweet.
+                </p>
+                <br/>
+                <img src="../assets/compose-tweet/tweet-columns.png" >
+                <br/>
+                <br/>
+                <p class="post-paragraph">
+                    First I broke it into two columns. The left column which contained the 
+                    profile image and the right column which contained everything else.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    Within the right column I knew I'd need a further 3 rows, the top row would contain the username
+                    and ellipsis menu; the second row would contain the content of the tweet; the bottom row 
+                    would contain the icon buttons.
+                </p>
+                <br/>
+                <img src="../assets/compose-tweet/tweet-rows.png" >
+                <br/>
+                <h3 class="post-h3">The top row</h3>
+                <p class="post-paragraph">
+                    The top row is straightforward. It consists of 2 more rows, nested, one arranged to 
+                    the start and the second filling max width remaining and arranged to the end.
+                </p>
+                <pre>
+                    <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    @Composable
+    fun TopRow(...) {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically) {
+            Row(horizontalArrangement = Arrangement.Start) {
+                Spacer(...)
+                Text(...)
+                ...
+            }
+            Row(modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End) {
+                IconButton(onClick = {  }) {...}
+            }
+        }
+    }</code>
+                </pre>
+                <br/>
+                <h3 class="post-h3">The middle row</h3>
+                <p class="post-paragraph">
+                    The middle row in my example is just a textview, so nothing special. Though in a more 
+                    fleshed out example you'd need to format images text length etc..
+                </p>
+                <br/>
+                <h3 class="post-h3">The bottom row</h3>
+                <p class="post-paragraph">
+                    The bottom contains a series of rows, each containing an icon and text if a counter is present.
+                    The horizontal arrangement is <code class="emph">SpaceBetween</code>, the spacer is added to ensure the share icon isn't 
+                    at the end of the row as that isn't how tweets are styled.
+                </p>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Top Row</div>
+                    <div class="cb-header">Icon with counter</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    @Composable
+    fun BottomRow(...) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            BottomRowIconWithOptionalCount(count = commentCount, image = Icons.Outlined.Notifications)
+            ...
+            Spacer(modifier = Modifier.width(20.dp))
+        }
+    }</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    @Composable
+    fun BottomRowIconWithOptionalCount(...) {
+        Row(modifier = Modifier.clickable {  }) {
+            Icon(...)
+            Spacer(...)
+            Text(...)
+        }
+    }</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <p class="post-paragraph">
+                    Thats all there is to a tweet. In this example the icons don't match Twitters, the 
+                    actions and animations haven't been hooked up but the majority of the UI for a tweet 
+                    can be expressed in around 130 lines of code using Compose.
+                </p>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+    <footer class="footer"></footer>
+</body>
