@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="../prism.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=0,width=device-width, initial-scale=1.0">
+    <meta name="description" content="Some notes on the use of Room Relation for many to many objects">
+    <meta property="og:title" content="Android: Room many to many objects">
+    <meta property="og:description" content="Some notes on the use of Room Relation for many to many objects">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hoinzey.dev/android-room-many-to-many-objects.html">
+    
+    <script async src="../prism.js"></script>
+    <script async src="../script.js"></script>
+    <title>
+        Android: Room many to many objects
+    </title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hoinzey</h1>
+            <h2>Javascript. Kotlin. Android. Java</h2>
+        </header>
+        <div class="post">
+            <h1 class="post-h1">Android: Room many to many objects</h1>
+            <p class="post-date">25<sup>th</sup> April 2023</p>
+            <article class = "post-article">
+                <p class="post-paragraph">
+                    I previously wrote a post on <a href="https://hoinzey.dev/posts/android-room-one-to-many.html">one to many</a> relationships 
+                    in Android's Room database. This post will look at many-to-many relationships.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    There are plenty of scenarios where you build a database schema that has a many-to-many relationship.
+                    In this example I am using Animals being put into groups, imagine a farmer organising their herd.
+                    An animal can be in many groups. A group can have many animals.
+                    Modelled below.
+                </p>
+                <div class="code-block-wrapper cbw-2">
+                    <div class="cb-header">Animal</div>
+                    <div class="cb-header">Group</div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    @Entity(tableName = "animals")
+    data class AnimalEntity(
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "animalid")
+        var animalId: Long = 0,
+        var ref: String
+    )</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-2">
+                        <pre>
+                    <code class="language-kotlin">
+    @Entity(tableName = "groupings",
+        indices = [Index(value = ["name"], unique = true)])
+    data class GroupingEntity(
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "groupid")
+        var groupId: Long = 0,
+        var name: String
+    )</code>
+                                        </pre>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <p class="post-paragraph">
+                    The first step is to create a table which will hold both sets of IDs. This table will then be used 
+                    within 2 data classes to give us either our group with the list of animals, or our animal with its 
+                    list of groups.
+                </p>
+                <br/>
+                <p class="post-paragraph">
+                    The <code class="emph">AnimalToGroupingEntity</code> has primary keys of both <code class="emph">animalid</code> 
+                    and <code class="emph">groupid</code>. The 2 supporting data classes have their parent and entity column flipped 
+                    depending on which result they are looking for. You can google the annotations if you want. Just copy and paste though
+                    and you'll have a working many-to-many setup.
+                </p>
+                <br/>
+                <div class="code-block-wrapper cbw-3">
+                    <div class="cb-header">Animal to Group Entity</div>
+                    <div class="cb-header">Group with animals</div>
+                    <div class="cb-header">Animal with groups</div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    @Entity(tableName = "animalstogroups",
+        primaryKeys = ["animalid", "groupid"],
+        foreignKeys = [ForeignKey(
+            entity = GroupingEntity::class,
+            parentColumns = arrayOf("groupid"),
+            childColumns = arrayOf("groupid"),
+            onDelete = CASCADE)])
+    data class AnimalToGroupingEntity(
+        @ColumnInfo(name = "animalid")
+        val animalId: Long,
+        @ColumnInfo(name = "groupid")
+        val groupId: Long
+    )</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    data class GroupWithAnimals (
+        @Embedded val group: GroupingEntity,
+        @Relation(
+            parentColumn = "groupid",
+            entityColumn = "animalid",
+            associateBy = Junction(AnimalToGroupingEntity::class))
+            val animals: List<AnimalEntity>)</code>
+                                        </pre>
+                    </div>
+                    <div class="code-block cb-3">
+                        <pre>
+                            <img src="../assets/copy-icon.png" class="copy-icon">
+                    <code class="language-kotlin">
+    data class AnimalToGroups(
+        @Embedded val animal: AnimalEntity,
+    @Relation(
+        parentColumn = "animalid",
+        entityColumn = "groupid",
+        associateBy = Junction(AnimalToGroupingEntity::class)
+    )
+    val groups: List<GroupingEntity>
+)</code>
+                                        </pre>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <aside class="aside">
+            <section class="bio">
+                <p>
+                    This is not a blog, plenty of people do a better job of that.
+                    I work in software and I forget stuff so I'm going to write it down
+                </p>
+            </section>
+            <section class="links">
+                <ul>
+                    <li>
+                        <a href="../index.html">Home</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+    <footer class="footer"></footer>
+</body>
