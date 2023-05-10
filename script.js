@@ -52,3 +52,20 @@ function copyFunction(node) {
     console.log("Found " + nearestCodeBlock)
     copyButton.addEventListener('click', copyFunction(nearestCodeBlock));
   }
+
+const topicSelect = document.getElementById('topic-select');
+const blogPosts = document.querySelectorAll('.blog-post');
+
+topicSelect.addEventListener('change', () => {
+  const selectedTopic = topicSelect.value;
+
+  blogPosts.forEach(post => {
+    const tags = post.getAttribute('data-tags').split(' ');
+
+    if (selectedTopic === 'all' || tags.includes(selectedTopic)) {
+      post.style.display = 'block';
+    } else {
+      post.style.display = 'none';
+    }
+  });
+});
