@@ -17,7 +17,8 @@
         </header>
         <div class="content">
             <section id="posts">
-                <article class="blog-post" data-tags="android">
+                
+                    <article class="blog-post" data-tags="android">
                     <h2 class="post-title"><a href="posts/android-room-many-to-many.html">Android: Room many to many</a></h2>
                     <p class="post-date">
                         25<sup>th</sup> April 2023
@@ -319,8 +320,6 @@
         <aside class="aside">
             <section class="bio">
                 <p>
-                    This is not a blog, plenty of people do a better job of that.
-                    I work in software and I forget stuff so I'm going to write it down
                 </p>
             </section>
             <!-- <section class="links">
@@ -335,4 +334,13 @@
         </aside>
         <footer class="footer"></footer>
     </div><!-- Page -->
+    <script>
+        console.log("Script is running...");
+        // Retrieve the asideText from localStorage, or use a default value
+        var asideText = localStorage.getItem("asideText");
+        console.log("Aside text:", asideText);
+      
+        // Set the text of the aside element
+        document.querySelector('aside').textContent = asideText;
+      </script>
 </body>

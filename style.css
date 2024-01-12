@@ -1,5 +1,5 @@
 body{
-    margin: auto;
+    margin: 0;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -7,19 +7,20 @@ header{
     text-align: center;
     font-weight: bold;
     width: 100%;
+    background-color: #000000C2;
 }
 
 header h1 {
     font-size: 4rem;
+    color: #FFFFFF;
+}
+
+header h2 {
+    color: #F08D49;
 }
 
 header h1, .post-h1{
     margin: 10px 0 10px 0;
-}
-
-header {
-    background-color: #dee7e1;
-    color: #0f1310;
 }
 
 footer{
@@ -29,18 +30,17 @@ footer{
 }
 
 .container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
     display: flex;
     flex-wrap: wrap;
 }
 
-/* .container > * {
-    padding: 10px;
-} */
-
 div.content{
     order: 2;
-    width: 50%;
-    margin-right: auto;
+    /* width: 50%; */
+    /* margin-right: auto; */
 }
 
 h2.post-title a{
@@ -93,13 +93,6 @@ figure {
     margin: 0;
 }
 
-aside{
-    width: 10%;
-    order: 1;
-    margin-left: auto;
-    padding: 15px;
-}
-
 aside {
     font-size: 0.9em;
     line-height: 1.5em;
@@ -125,8 +118,8 @@ aside {
     grid-template-columns: repeat(4, 1fr);
 }
 .cb-header {
-    background-color: #afb5b1f5;
-    color: rgb(45 45 45);
+    background-color: #8d623f;
+    color: #FFFFFF;
     text-align: center;
     padding: 10px;
 }
@@ -162,88 +155,33 @@ pre:hover img{
     display: block;
 }
 
-    /* .aside { flex: 1; max-width: 220px; }  */
-    /* .container {width: 100%;} */
-    .post, .post-paragraph {
-        order: 2; 
-        flex: 2; }
-    .footer { order: 4; }
-    .post {
-        max-width: 800px;
-        margin-right: auto;
+.post, .post-paragraph {
+    order: 2; 
+    flex: 2; }
+
+.footer { order: 4; }
+
+ @media screen and (min-width: 769px) {
+    aside {
+      order: 1;
+      width: 20%;
+      margin-right: 20px;
+      margin-top: 20px;
     }
-    .post-article {}
-
-/* @media all and (min-width: 1660px) {
-    .aside { flex: 1; max-width: 220px; padding-left: 100px; } 
-    .container {width: 100%;}
-    .content, .post, .post-paragraph { 
-        order: 2; 
-        flex: 2; }
-    .footer { order: 4; }
-    .post {max-width: 1000px;margin:0 auto;}
-    .content {max-width: 1000px;margin:0 auto;}
-    .post-article {width: 85%;}
- }
-
-@media all and (min-width: 1024px) and (max-width: 1660px) {
-    .aside { flex: 1; max-width: 220px; } 
-    .container {width: 100%;}
-    .content, .post, .post-paragraph {
-        order: 2; 
-        flex: 2; }
-    .footer { order: 4; }
-    .post {max-width: 1000px;}
-    .post-article {width: 70%;}
- }
-
-@media all and (min-width: 768px) and (max-width: 1024px) {
-    .aside { flex: 1; } 
-    .container {width: 100%;}
-    .content, .post, .post-paragraph { 
-        order: 2; 
-        flex: 2; 
-        width: 70%; }
-    .footer { order: 4; }
- }
-
-@media all and (min-width: 480px) and (max-width: 768px) {
-    .aside { order: 1; } 
-    .content, .post, .post-paragraph, .container { order: 2; width: 100%}
-    .container {padding: 0px;}
-    .footer { order: 4; }
- }
-
-@media all and (max-width: 480px) {
-    .aside { order: 1; } 
-    .content, .post, .post-paragraph, .container { 
-        order: 2;
-        width: 100%;
+  
+    .content {
+      width: 75%;
     }
-    .container > * {padding: 0px;}
-    .footer { order: 4; }
- } */
+  }
 
- @media all and (max-width: 900px) {
-    .container {
-        padding: 5px;
-        display: block;
+  @media screen and (max-width: 768px) {
+    aside {
+      order: 2;
+      width: 100%;
+      margin-bottom: 20px;
     }
-
-    div.content {
-        order: 2;
+  
+    .content {
+      width: 100%;
     }
-
-    aside{
-        order: 1;
-        padding: 0px;
-    }
-
-    div.content, aside{
-        width: 100%;
-    }
-
-    .post, .post-paragraph {
-        width: 100%;}
-
- }
+  }

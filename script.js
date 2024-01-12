@@ -1,3 +1,6 @@
+var asideText = "I'm not the sharpest tool but I hack away all the same";
+localStorage.setItem("asideText", asideText);
+
 var codeBlockWrappers = document.getElementsByClassName("code-block-wrapper")
 for(var i=0; i < codeBlockWrappers.length; i++){
     var wrapper = codeBlockWrappers[i]
@@ -56,16 +59,16 @@ function copyFunction(node) {
 const topicSelect = document.getElementById('topic-select');
 const blogPosts = document.querySelectorAll('.blog-post');
 
-topicSelect.addEventListener('change', () => {
-  const selectedTopic = topicSelect.value;
+// topicSelect.addEventListener('change', () => {
+//   const selectedTopic = topicSelect.value;
 
-  blogPosts.forEach(post => {
-    const tags = post.getAttribute('data-tags').split(' ');
+//   blogPosts.forEach(post => {
+//     const tags = post.getAttribute('data-tags').split(' ');
 
-    if (selectedTopic === 'all' || tags.includes(selectedTopic)) {
-      post.style.display = 'block';
-    } else {
-      post.style.display = 'none';
-    }
-  });
-});
+//     if (selectedTopic === 'all' || tags.includes(selectedTopic)) {
+//       post.style.display = 'block';
+//     } else {
+//       post.style.display = 'none';
+//     }
+//   });
+// });
